@@ -1,0 +1,59 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; tools.ini
+;
+; Webhostadm configuration file: paths to some programs.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[tools]
+
+; awk
+;   Default value: @AWK@
+awk="@AWK@";
+
+; dialog
+;   Default value: @DIALOG@
+dialog="@DIALOG@";
+
+; mktemp
+;   Default value: @MKTEMP@
+mktemp="@MKTEMP@";
+
+; pkg_info
+;   Default value: @PKG_INFO@
+pkg_info="@PKG_INFO@";
+
+; dpkg
+;   Default value: @DPKG@
+dpkg="@DPKG@";
+
+; dpkg_query
+;   Default value: @DPKG_QUERY@
+dpkg-query="@DPKG_QUERY@";
+
+; cut
+;   Default value: @CUT@
+cut="@CUT@";
+
+; tr 
+;   Default value: @TR@
+tr="@TR@";
+
+; wc
+;   Default value: @WC@ 
+wc="@WC@";
+
+; sed
+;   Default value: @SED@ 
+sed="@SED@";
+
+; grep
+;   Default value: @GREP@ 
+grep="@GREP@";
+
+; uniq:
+;   Default value: @UNIQ@ 
+uniq="@UNIQ@";
+
+; php
+;   Default value: @PHP@ 
+php="@PHP@";
