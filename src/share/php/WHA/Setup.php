@@ -205,10 +205,8 @@ class WHA_Setup {
     /**
      * Find the name(s) of installed apache package(s).
      *
-     * Return array of strings if package(s) found or `false` if an error 
-     * occurred. If no package was found, an empty array is returned.
-     *
-     * @return array|false
+     * @return array|false  array of strings if package(s) found, empty array 
+     *                      if not, `false` if an error occurred.
      * @since 0.1
      */
     public function findInstalledApaches(&$err = null) {

@@ -33,7 +33,13 @@ require_once('WHA/Setup.php');
 require_once('WHA/Misc.php');
 
 /**
- * Provides the 'setup' command.
+ * Provides the 'setup' command. 
+ *
+ * This object implements 'wha setup' CLI command. It drives a series of menus 
+ * and other dialogs to lead user through configuration steps. 
+ *
+ * Most of the stuff is based on callbacks. All the methods named `onXxx()` are 
+ * callbacks which are called in response to certain menus or buttons. 
  *
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -179,9 +185,9 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             'ACCEPT' => 'Accept and save changes'
         );
         $cbs = array( // callbacks
-            'APACHE' => array($this, 'onApacheItem'),
-            'SYSLOG' => array($this, 'onSyslogItem'),
-            'ACCEPT' => array($this, 'onAcceptItem')
+            'APACHE' => array($this, 'onApache'),
+            'SYSLOG' => array($this, 'onSyslog'),
+            'ACCEPT' => array($this, 'onAccept')
         );
         $menu = new WHA_DialogMenu($text, 15, 60, 12, $items, $opts, $cbs);
         $menu->setReturnTag('ACCEPT');
@@ -190,11 +196,11 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         $menu->getExitCode();
     }
     // }}}
-    // onApacheItem() {{{
+    // onApache() {{{
     /**
      * @since 0.1
      */
-    public function onApacheItem($caller) {
+    public function onApache($caller) {
         $opts = array(
             '--backtitle', $this->_btitle,
             '--title', "Apache configuration menu"
@@ -207,19 +213,19 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             'RETURN'  => 'Return to main menu'
         );
         $cbs = array( // callbacks
-            'PACKAGE' => array($this, 'onApachePkgnameItem'),
-            'CONFDIR' => array($this, 'onApacheConfdirItem')
+            'PACKAGE' => array($this, 'onApachePkgname'),
+            'CONFDIR' => array($this, 'onApacheConfdir')
         );
         $menu = new WHA_DialogMenu($text, 15, 60, 12, $items, $opts, $cbs);
         $menu->setReturnTag('RETURN');
         $menu->run();
     }
     // }}}
-    // onSyslogItem() {{{
+    // onSyslog() {{{
     /**
      * @since 0.1
      */
-    public function onSyslogItem($caller) {
+    public function onSyslog($caller) {
         $opts = array(
             '--backtitle', $this->_btitle,
             '--title', "Syslog configuration menu"
@@ -237,11 +243,11 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         $menu->run();
     }
     // }}}
-    // onAcceptItem() {{{
+    // onAccept() {{{
     /**
      * @since 0.1
      */
-    public function onAcceptItem($caller) {
+    public function onAccept($caller) {
         $file = $this->_setup->getCurrentFile();
         if(file_exists($file)) {
             $opts = array(
@@ -270,11 +276,11 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         }
     }
     // }}}
-    // onApachePkgnameItem() {{{
+    // onApachePkgname() {{{
     /**
      * @since 0.1
      */
-    public function onApachePkgnameItem($caller) {
+    public function onApachePkgname($caller) {
         $item = $this->_setup->searchItem(array('apache','pkgname'));
         if($item === false) {
             // TODO: what to do here?. Raise error, or create value?
@@ -295,11 +301,11 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             $item->setContent($inputbox->getValue());
     }
     // }}}
-    // onApacheConfdirItem() {{{
+    // onApacheConfdir() {{{
     /**
      * @since 0.1
      */
-    public function onApacheConfdirItem($caller) {
+    public function onApacheConfdir($caller) {
         $item = $this->_setup->searchItem(array('apache','confdir'));
         if(!isset($item)) {
             // TODO: what to do here?. Raise error, or create value?
@@ -326,40 +332,16 @@ class WHA_CliCmdSetup extends WHA_CliCmd
     public function onApachePkgnameGuess($caller) {
         $apaches = $this->_setup->findInstalledApaches($err);
         $opts = array( '--backtitle', $this->_btitle, '--title', "");
-        if(!$apaches) {
+        if($apaches === false) {
             $opts[3] = "Error";
             if(is_string($err) && strlen($err) > 0) {
                 $msgbox = new WHA_DialogMsgbox($err, 7, 60, $opts);
             } else {
-                $msgbox = new WHA_DialogMsgbox("unspecified error",7,60,$opts);
+                $msgbox = new WHA_DialogMsgbox("an error occurred",7,60,$opts);
             }
             $msgbox->run();
-        } elseif(count($apaches) > 0) {
-            $opts[3] = "Apache installation(s) found";
-            if(count($apaches) > 1) {
-                $items = array_fill_keys($apaches, array("",0));
-                $text = "I guess, one of these is your apache package. " .
-                        "Chose one.";
-                $radiolist = new WHA_DialogRadiolist($text, 12, 50, 10, $items, 
-                                                     $opts);
-                $radiolist->run();
-                if($radiolist->getExitCode() == DIALOG_OK) {
-                    $caller->setValue($radiolist->selection);
-                }
-            } else {
-                $text = "I guess your apache package is '$apaches[0]'. " .
-                        "Accept?";
-                $yesno = new WHA_DialogYesno($text, 7, 60, $ops);
-                $yesno->run();
-                if($yesno->getExitCode() == DIALOG_OK)
-                    $caller->setValue($apaches[0]);
-            }
-        } else {
-            $opts[3] = "Information";
-            $text = "Apache not found (not installed?).";
-            $msgbox = new WHA_DialogMsgbox($text, 6, 50, $opts);
-            $msgbox->run();
-        }
+        } 
+        $this->confirmGuessResult($caller, $apaches, "Apache installation"); 
         $caller->resume();
     }
     // }}}
@@ -371,48 +353,89 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         $opts = array( '--backtitle', $this->_btitle, '--title', "");
         $caller->resume();
         $apache = $this->_setup->searchItemContent(array('apache','pkgname'));
+        $dirs = array();
         if(!$apache || strlen($apache) == 0) {
             $opts[3] = "Information";
-            $text = "Apache package name is not set, so I can't guess";
+            $text = "Apache package name is not set. You may wish to define ".
+                    "it APACHE | PKGNAME.";
             $msgbox = new WHA_DialogMsgbox($text,7,60,$opts);
             $msgbox->run();
-            return;
+        } else {
+            $files = wha_pkg_list_files($apache, $err);
+            if($files === false) {
+                $opts[3] = "Error";
+                if(is_string($err) && strlen($err) > 0) {
+                    $msgbox = new WHA_DialogMsgbox($err, 7, 60, $opts);
+                } else {
+                    $msgbox = new WHA_DialogMsgbox("an error occurred",7,60,$opts);
+                }
+                $msgbox->run();
+            } else {
+                $re = '#[\\/](apache|httpd)[0-9]{0,2}\\.conf$#';
+                $files = array_filter($files, function ($f) use($re) {
+                    return preg_match($re, $f);
+                });
+                foreach($files as $file) {
+                    if(is_file($file))
+                        $dirs[] = dirname($file);
+                }
+            }
         }
-//        if(!$apaches) {
-//            $opts[3] = "Error";
-//            if(is_string($err) && strlen($err) > 0) {
-//                $msgbox = new WHA_DialogMsgbox($err, 7, 60, $opts);
-//            } else {
-//                $msgbox = new WHA_DialogMsgbox("unspecified error",7,60,$opts);
-//            }
-//            $msgbox->run();
-//        } elseif(count($apaches) > 0) {
-//            $opts[3] = "Apache installation(s) found";
-//            if(count($apaches) > 1) {
-//                $items = array_fill_keys($apaches, array("",0));
-//                $text = "I guess, one of these is your apache package. " .
-//                        "Chose one.";
-//                $radiolist = new WHA_DialogRadiolist($text, 12, 50, 10, $items, 
-//                                                     $opts);
-//                $radiolist->run();
-//                if($radiolist->getExitCode() == DIALOG_OK) {
-//                    $caller->setValue($radiolist->selection);
-//                }
-//            } else {
-//                $text = "I guess your apache package is '$apaches[0]'. " .
-//                        "Accept?";
-//                $yesno = new WHA_DialogYesno($text, 7, 60, $ops);
-//                $yesno->run();
-//                if($yesno->getExitCode() == DIALOG_OK)
-//                    $caller->setValue($apaches[0]);
-//            }
-//        } else {
-//            $opts[3] = "Information";
-//            $text = "Apache not found (not installed?).";
-//            $msgbox = new WHA_DialogMsgbox($text, 6, 50, $opts);
-//            $msgbox->run();
-//        }
-//        $caller->resume();
+
+        // look in some standard places
+        $sysconfdirs = array( '/etc', '/usr/local/etc' );
+        $subdirs = array( 'apache*', 'httpd*' );
+        foreach($sysconfdirs as $sdir) {
+            foreach ($subdirs as $subdir) {
+                $ds = DIRECTORY_SEPARATOR;
+                $glob = glob(implode($ds,array($sdir,$subdir)), GLOB_ONLYDIR);
+                // ignore errors and go ahead, its not mission critical 
+                if(is_array($glob) && count($glob) > 0) {
+                    $dirs = array_merge($dirs, $glob);
+                }
+            }
+        }
+        $this->confirmGuessResult($caller, $dirs, "Apache config dir");
+
+    }
+    // }}}
+    // configmGuessResult() {{{
+    /**
+     * Confirm result of some guesses. 
+     *
+     * @param WHA_Inputbox object which is receiving th evalue
+     * @param array array of values discovered
+     * @param string name of the parameter that was guessed (e.g "config dir")
+     * @since 0.1
+     */
+    public function confirmGuessResult($receiver, $array, $what) {
+        $opts = array( '--backtitle', $this->_btitle, '--title', "");
+        if (is_array($array)) {
+            $array = array_unique($array);
+            $opts[3] = "$what(s) found";
+            if (count($array) > 1) {
+                $items = array_fill_keys($array, array("",0));
+                $text = "I guess, one of these is your $what. Chose one.";
+                $radiolist = new WHA_DialogRadiolist($text, 12, 50, 10, $items, 
+                                                     $opts);
+                $radiolist->run();
+                if($radiolist->getExitCode() == DIALOG_OK) {
+                    $receiver->setValue($radiolist->selection);
+                }
+                return;
+            } elseif (count($array) == 1) {
+                $text = "I guess your $what is '$array[0]'. Accept?";
+                $yesno = new WHA_DialogYesno($text, 7, 60, $opts);
+                $yesno->run();
+                if($yesno->getExitCode() == DIALOG_OK)
+                    $receiver->setValue($array[0]);
+                return;
+            }
+        }
+        $opts[3] = "Information";
+        $text = "$what not found.";
+        $msgbox = new WHA_DialogMsgbox($text, 6, 50, $opts);
+        $msgbox->run();
     }
     // }}}
 };

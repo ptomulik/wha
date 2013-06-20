@@ -76,6 +76,7 @@ apigen_targets = ./api-doc/404.html \
                   ./api-doc/function-wha_pkg_glob_installed.html \
                   ./api-doc/function-wha_pkg_glob_re_installed.html \
                   ./api-doc/function-wha_pkg_is_installed.html \
+                  ./api-doc/function-wha_pkg_list_files.html \
                   ./api-doc/function-wha_tool_close.html \
                   ./api-doc/function-wha_tool.html \
                   ./api-doc/function-wha_tool_open.html \
@@ -170,6 +171,7 @@ apigen_targets = ./api-doc/404.html \
                   ./api-doc/source-function-wha_pkg_glob_installed.html \
                   ./api-doc/source-function-wha_pkg_glob_re_installed.html \
                   ./api-doc/source-function-wha_pkg_is_installed.html \
+                  ./api-doc/source-function-wha_pkg_list_files.html \
                   ./api-doc/source-function-wha_tool_close.html \
                   ./api-doc/source-function-wha_tool.html \
                   ./api-doc/source-function-wha_tool_open.html \

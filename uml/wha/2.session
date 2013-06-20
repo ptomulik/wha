@@ -1,0 +1,14 @@
+window_sizes 1800 945 450 1344 741 128
+diagrams
+  classdiagram_ref 135938 // WHA_Path_ClassDiagram
+    1075 592 100 4 0 0
+  active  classdiagram_ref 136066 // WHA_Object_ClassDiagram
+    1075 592 100 4 0 0
+end
+show_stereotypes
+selected 
+package_ref 129 // webhostadm
+open
+end
+end
+verbose

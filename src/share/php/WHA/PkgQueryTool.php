@@ -206,6 +206,38 @@ class WHA_PkgQueryTool
         }
     }
     // }}}
+    // listFiles() {{{
+    /**
+     * List files contained within package.
+     *
+     * @param string package name
+     * @param string error messages from package query tool
+     * @return array|false array with file names, or `false` on error
+     * @since 0.1
+     */
+    public function listFiles($pkg, &$err = null)
+    {
+        if(!isset($this->_tool)) {
+            $err = 'listFiles(): no tool available to perform query';
+            return null;
+        }
+        switch($this->_tool) {
+            case 'pkg_info':
+            case 'dpkg-query':
+                $args = array('-L', $pkg);
+                $status = wha_tool_run($this->_tool, $args, null, $out, $err);
+                if($status !=  0) return false;
+                elseif($status > 0) return false;
+                $files = explode("\n", $out);
+                // remove empty entries
+                $files = array_filter($files, function ($f){return (bool)$f;});
+                return $files;
+            default:
+                $err = 'listFiles(): no supported tool to perform query';
+                return false;
+        }
+    }
+    // }}}
     // globInstalled() {{{
     /**
      * Find among installed packages the packages matching given glob. Return 
@@ -221,7 +253,7 @@ class WHA_PkgQueryTool
     {
         if(!isset($this->_tool)) {
             $err = 'globInstalled(): no tool available to perform query';
-            return null;
+            return false;
         }
         switch($this->_tool) {
             case 'pkg_info':
@@ -234,9 +266,8 @@ class WHA_PkgQueryTool
                 $args = array('-f','${binary:Package} ${Status}\n','-W',$glob);
                 $status = wha_tool_run('dpkg-query', $args, null, $out, $err);
 
-                if($status ==  -1) return null;
-                elseif($status > 0) return false;
-                if(!$out) return false;
+                if($status ==  -1) return false;
+                elseif($status > 0 || !$out) return array();
                 $names = array();
                 $lines = explode("\n", $out);
                 foreach($lines as $line) {
@@ -248,7 +279,7 @@ class WHA_PkgQueryTool
                 return $names;
             default:
                 $err = 'globInstalled(): no supported tool to perform query';
-                return null;
+                return false;
         }
     }
     // }}}
@@ -290,6 +321,20 @@ class WHA_PkgQueryTool
 function wha_pkg_is_installed($pkg, &$err = null)
 {
     return WHA_PkgQueryTool::instance()->isInstalled($pkg, $err);
+}
+/**
+ * Short-hand to {@link WHA_PkgQueryTool::listFiles()}.
+ *
+ * @param string package name
+ * @param string error messages from package query tool
+ * @return array | false
+ * @package WHA
+ * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>                              
+ * @since 0.1
+ */
+function wha_pkg_list_files($pkg, &$err = null)
+{
+    return WHA_PkgQueryTool::instance()->listFiles($pkg, $err);
 }
 /**
  * Short-hand to {@link WHA_PkgQueryTool::globInstalled()}.

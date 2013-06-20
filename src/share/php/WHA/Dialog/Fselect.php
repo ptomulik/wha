@@ -34,15 +34,6 @@ require_once('WHA/Dialog/Widget.php');
  */
 class WHA_DialogFselect extends WHA_DialogWidget
 {
-    // $_value {{{
-    /**
-     * Initial text shown in the fselect box
-     *
-     * @var string
-     * @since 0.1
-     */
-    protected $_value;
-    // }}}
     // display() {{{
     /**
      * Display fselect.
@@ -62,8 +53,6 @@ class WHA_DialogFselect extends WHA_DialogWidget
         if(is_array($this->options)) $opts = $this->options;
         else $opts = array();
 
-        $out = $this->_output;
-        $this->_output = $this->getValue();
         $e = wha_dialog_fselect(
             $this->_output,
             $this->_errmsg,
@@ -72,8 +61,6 @@ class WHA_DialogFselect extends WHA_DialogWidget
             $this->width,
             $opts
         );
-        if($e === DIALOG_OK) $this->setValue($this->_output);
-        else $this->_output = $out;
 
         $this->_done = true;
         return $e;
@@ -87,7 +74,7 @@ class WHA_DialogFselect extends WHA_DialogWidget
      * @since 0.1
      */
     public function setValue($val) {
-        $this->_value = $val;
+        $this->text = $val;
     }
     // }}}
     // getValue() {{{
@@ -98,7 +85,7 @@ class WHA_DialogFselect extends WHA_DialogWidget
      * @since 0.1
      */
     public function getValue() {
-        return $this->_value;
+        return $this->text;
     }
     // }}}
 }
