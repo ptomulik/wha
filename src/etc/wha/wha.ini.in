@@ -8,24 +8,23 @@
 ; pkgname
 ;   apache package name, this is used to talk to package query tools such as
 ;   dpkg-quer or pkg_info
-pkgname="apache2"
+pkgname=
 ; confdir
 ;   apache configuration directory, where much of apache's stuff resides,
-confdir="/etc/apache2"
-; moddir
-;   where module libraries (mod_xxx.so files) reside
-moddir="/usr/lib/apache2/modules"
-; 
-vhosts_available_dir="/etc/apache2/vhosts-available"
-;
-vhosts_enabled_dir="/etc/apache2/vhosts-enabled"
-;
-mods_available_dir="/etc/apache2/mods-available"
-;
-mods_enabled_dir="/etc/apache2/mods-enabled"
+confdir=
+; wha-vhosts-available
+;   where wha script will put its vhost files
+vhosts-available=
+; wha-vhosts-enabled
+;   directory with symbolic links to wha-defined virtual hosts
+vhosts-enabled=
+; wha-macros
+;   where to put macros for apache
+macros=
 
-[newsyslog]
-;
-confdir="/etc/newsyslog.d"
-;
-vhosts_confdir="/etc/newsyslog.d/vhosts.d"
+[log-rotation]
+; facility
+;   facility used for log rotation; possible values:
+;   - logrotate,
+;   - newsyslog
+facility=

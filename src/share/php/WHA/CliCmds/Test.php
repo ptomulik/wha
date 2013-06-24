@@ -22,7 +22,7 @@
 
 require_once('WHA/CliCmd.php');
 require_once('WHA/CliCmdFactory.php');
-require_once('WHA/Dialog/Inputbox.php');
+require_once('Config.php');
 
 class WHA_CliCmdTest extends WHA_CliCmd
 {
@@ -47,8 +47,8 @@ class WHA_CliCmdTest extends WHA_CliCmd
     // }}}
     // $_cmd_args {{{
     private static $_cmd_args = array(
-        'range' => array(0,1),
-        0 => array('name' => 'value', 'help' => 'initial value to dialog')
+        'range' => array(1,1),
+        0 => array('file' => 'file', 'help' => 'input file')
     );
     // }}}
     // registerThisCmd() {{{
@@ -62,7 +62,9 @@ class WHA_CliCmdTest extends WHA_CliCmd
     // execute () {{{
     public function execute()
     {
-        $this->setCliExitCode(0);
+        $config = new Config();
+        $root = $config->parseConfig($this->getCliArgument(0), 'Apache');
+        var_dump($root);
     }
     // }}}
 };

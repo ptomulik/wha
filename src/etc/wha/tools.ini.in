@@ -57,3 +57,7 @@ uniq="@UNIQ@";
 ; php
 ;   Default value: @PHP@ 
 php="@PHP@";
+
+; which
+;   Default value: 'which' 
+which="which";

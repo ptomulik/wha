@@ -31,35 +31,30 @@ unset($__wha_e592e41b, $__wha_21dad038);
 
 require_once('WHA/PkgQueryTool.php');
 
-class WHA_SetupException extends Exception {};
+class WHA_ConfEditException extends Exception {};
 /**
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @since 0.1
  */
-class WHA_Setup {
-    // $_initial_values {{{
+class WHA_ConfEdit {
+    // $_defaults {{{
     /**
-     * Initial configuration
+     * Default values for configuration directives
      *
      * @var array
      * @since 0.1
      */
-    protected static $_initial_values = array(
+    protected static $_defaults = array(
         'apache' => array(
             'pkgname' => '',
             'confdir' => '',
-            'moddir' => '',
-            'vhosts_available_dir' => '',
-            'vhosts_enabled_dir' => '',
-            'mods_available_dir' => '',
-            'mods_enabled_dir' => ''
+            'vhosts-available' => '',
+            'vhosts-enabled' => '',
+            'macros' => '',
         ),
-        'newsyslog' => array(
-            'pkgname' => '',
-            'config' => '',
-            'confdir' => '',
-            'vhosts_confdir' => ''
+        'log-rotation' => array(
+            'facility' => ''
         )
     );
     // }}}
@@ -96,7 +91,7 @@ class WHA_Setup {
         $this->_conf = new Config();
         $root = $this->_conf->getRoot();
 
-        foreach(self::$_initial_values as $section => $items) {
+        foreach(self::$_defaults as $section => $items) {
             $node = $root->createSection($section);
             foreach($items as $key => $value) {
                 $node->createDirective($key, $value);
@@ -116,10 +111,9 @@ class WHA_Setup {
      * @since 0.1
      */
     public function loadIniFile($file) {
-        $this->_last_error = null;
         $conf = new Config();
         $root =& $conf->parseConfig($file, 'IniCommented');
-        if (! $root instanceof Config_Container) return $root;
+        if(!($root instanceof Config_Container)) return $root;
         if(isset($this->_conf)) unset($this->_conf);
         $this->_conf = $conf;
         $this->_curr_file = realpath($file);
@@ -137,13 +131,13 @@ class WHA_Setup {
      * @param string|null path to the output file, if not given, current file
      *                    is used ({@link getCurrentFile()}).
      * @return bool|PEAR_Error
-     * @throw WHA_SetupException
+     * @throw WHA_ConfEditException
      * @since 0.1
      */
     public function saveIniFile($file = null) {
         if(!isset($this->_conf)) {
-            $msg = "WHA_Setup::saveIniFile(): object is uninitialized";
-            throw WHA_SetupException($msg);
+            $msg = "WHA_ConfEdit::saveIniFile(): object is uninitialized";
+            throw WHA_ConfEditException($msg);
         }
         if(isset($file)) $new_file = $file;
         else $file = $this->_curr_file;
@@ -175,13 +169,27 @@ class WHA_Setup {
     /**
      * Shorthand to Config_Container::searchPath(). Search config for an item. 
      *
-     * @param mixed Strings or arrays of item to match in the order they will 
-     *              be matched, separated by commas
-     * @return mixed reference to item found or `false` when not found
+     * This method tries to find an item by following a given path from the 
+     * current container.
+     *
+     * This method takes as many parameters as is needed to define your path to 
+     * the requested item. The format is array (item1, item2, ..., itemN). 
+     * Items can be strings or arrays. Strings will match the item name, while 
+     * arrays will match 'name' and/or 'attributes' properties of the requested 
+     * item.
+     *
+     * @param mixed Array of strings or arrays of items to match in the order 
+     *              they will be matched, separated by commas. It may also be 
+     *              a string in form `parent/child`.
+     * @return mixed reference to item found or `false` when not found, 
+     *              PEAR_Error if `$args` is of invalid type.
      * @since 0.1
      */
     public function searchItem($args) {
         $root = $this->_conf->getRoot();
+        if(is_string($args)) {
+            $args = explode('/', $args);
+        }
         $item = $root->searchPath($args);
         return $item;
     }
@@ -215,6 +223,27 @@ class WHA_Setup {
         return wha_pkg_glob_re_installed($glob, $re, $err);
     }
     // }}}
+    // findAvailLogrotFacility() {{{
+    /**
+     * Find the available log rotation facility.
+     *
+     * @return string|false  string if found or `false` if not
+     * @since 0.1
+     */
+    public function findAvailLogrotFacility(&$err = null) {
+        $sel = false;
+        $facilities = array('logrotate', 'newsyslog');
+        foreach($facilities as $facility) {
+            $result = wha_tool_run('which',array($facility),null,$out,$err);
+            if($result == 0 && !$err && is_string($out) && strlen($out) > 0) {
+                $sel = $facility;
+                break;
+            } 
+        }
+        return $sel;
+    }
+    // }}}
+
 }
 
 

@@ -10,6 +10,8 @@ apigen_targets = ./api-doc/404.html \
                   ./api-doc/class-WHA_CliCmdTest.html \
                   ./api-doc/class-WHA_CliCmdVersion.html \
                   ./api-doc/class-WHA_Cli.html \
+                  ./api-doc/class-WHA_ConfEditException.html \
+                  ./api-doc/class-WHA_ConfEdit.html \
                   ./api-doc/class-WHA_DialogDselect.html \
                   ./api-doc/class-WHA_DialogException.html \
                   ./api-doc/class-WHA_DialogFselect.html \
@@ -24,8 +26,6 @@ apigen_targets = ./api-doc/404.html \
                   ./api-doc/class-WHA_Object.html \
                   ./api-doc/class-WHA_PkgQueryToolException.html \
                   ./api-doc/class-WHA_PkgQueryTool.html \
-                  ./api-doc/class-WHA_SetupException.html \
-                  ./api-doc/class-WHA_Setup.html \
                   ./api-doc/class-WHA_ShellConfigFileAnnotations.html \
                   ./api-doc/class-WHA_ToolsException.html \
                   ./api-doc/class-WHA_Tools.html \
@@ -106,6 +106,8 @@ apigen_targets = ./api-doc/404.html \
                   ./api-doc/source-class-WHA_CliCmdTest.html \
                   ./api-doc/source-class-WHA_CliCmdVersion.html \
                   ./api-doc/source-class-WHA_Cli.html \
+                  ./api-doc/source-class-WHA_ConfEditException.html \
+                  ./api-doc/source-class-WHA_ConfEdit.html \
                   ./api-doc/source-class-WHA_DialogDselect.html \
                   ./api-doc/source-class-WHA_DialogException.html \
                   ./api-doc/source-class-WHA_DialogFselect.html \
@@ -120,8 +122,6 @@ apigen_targets = ./api-doc/404.html \
                   ./api-doc/source-class-WHA_Object.html \
                   ./api-doc/source-class-WHA_PkgQueryToolException.html \
                   ./api-doc/source-class-WHA_PkgQueryTool.html \
-                  ./api-doc/source-class-WHA_SetupException.html \
-                  ./api-doc/source-class-WHA_Setup.html \
                   ./api-doc/source-class-WHA_ShellConfigFileAnnotations.html \
                   ./api-doc/source-class-WHA_ToolsException.html \
                   ./api-doc/source-class-WHA_Tools.html \

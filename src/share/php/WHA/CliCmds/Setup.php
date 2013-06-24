@@ -29,7 +29,7 @@ require_once('WHA/Dialog/Msgbox.php');
 require_once('WHA/Dialog/Inputbox.php');
 require_once('WHA/Dialog/Msgbox.php');
 require_once('WHA/Dialog/Radiolist.php');
-require_once('WHA/Setup.php');
+require_once('WHA/ConfEdit.php');
 require_once('WHA/Misc.php');
 
 /**
@@ -49,16 +49,15 @@ class WHA_CliCmdSetup extends WHA_CliCmd
 {
     // $_cmd_info {{{
     private static $_cmd_info = array(
-        'purp' => 'adjust wha configuration to your needs',
+        'purp' => 'edit main wha configuration',
         'help' => 
         "
     This is an interactive command which helps you configure your WHA 
-    installation. It reads initial configuration from current config file 
-    (usually `/etc/wha/wha.ini'), guides you through several configruation 
-    steps and finally allows you to save new version of the configuration file. 
-    You may provide --input option to read initial configuratoin from custom 
-    file. Target file for the new configuration may be defined with --output 
-    option.
+    installation. The command reads initial configuration from config file
+    (usually `/etc/wha/wha.ini'), guides you through several steps to alter 
+    current settings and finally allows to save new version of the 
+    configuration file. You may provide --file option to operate on custom 
+    configuration file instead of the default one. 
     ");
     // }}}
     // $_cmd_opts {{{
@@ -73,14 +72,14 @@ class WHA_CliCmdSetup extends WHA_CliCmd
     // $_cmd_args {{{
     private static $_cmd_args = null;
     // }}}
-    // $_setup {{{
+    // $_conf {{{
     /**
-     * An instance of `WHA_Setup` used as an functional backend.
+     * An instance of `WHA_ConfEdit` used as a "backend".
      *
-     * @var WHA_Setup
+     * @var WHA_ConfEdit
      * @since 0.1
      */
-    protected $_setup;
+    protected $_conf;
     // }}}
     // $_default_btitle {{{
     /**
@@ -120,8 +119,8 @@ class WHA_CliCmdSetup extends WHA_CliCmd
                 if($dialog->getExitCode() != DIALOG_OK) {
                     return;
                 } else {
-                    $this->_setup = new WHA_Setup();
-                    $ok = $this->_setup->saveIniFile($file);
+                    $this->_conf = new WHA_ConfEdit();
+                    $ok = $this->_conf->saveIniFile($file);
                     if($ok !== true) {
                         $this->setCliErrorMessage($ok->getMessage());
                         $ok = false;
@@ -132,8 +131,8 @@ class WHA_CliCmdSetup extends WHA_CliCmd
                     $this->setCliErrorMessage('file '.$file.' is not readable');
                     $ok = false;
                 } else {
-                    $this->_setup = new WHA_Setup();
-                    $ok = $this->_setup->loadIniFile($file);
+                    $this->_conf = new WHA_ConfEdit();
+                    $ok = $this->_conf->loadIniFile($file);
                     if($ok !== true)
                         $this->setCliErrorMessage($ok->getMessage());
                 }
@@ -145,8 +144,8 @@ class WHA_CliCmdSetup extends WHA_CliCmd
                 $this->setCliErrorMessage($text);
                 $ok = false;
             } else {
-                $this->_setup = new WHA_Setup();
-                $ok = $this->_setup->loadIniFile($located);
+                $this->_conf = new WHA_ConfEdit();
+                $ok = $this->_conf->loadIniFile($located);
                 if($ok !== true)
                     $this->setCliErrorMessage($ok->getMessage());
             }
@@ -162,7 +161,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         }
 
         $this->_btitle = self::$default_btitle ; 
-        $curfile = $this->_setup->getCurrentFile();
+        $curfile = $this->_conf->getCurrentFile();
         if(isset($curfile)) $this->_btitle .= ( " (" . $curfile . ")" );
 
         $this->runMainMenu();
@@ -180,13 +179,13 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         );
         $text = "Select configuration step";
         $items = array( 
-            'APACHE' => 'Settings related to apache',
-            'SYSLOG' => 'Settings related to syslog',
+            'APACHE' => 'Settings related to apache server',
+            'LOGROT' => 'Settings related to log rotation',
             'ACCEPT' => 'Accept and save changes'
         );
         $cbs = array( // callbacks
             'APACHE' => array($this, 'onApache'),
-            'SYSLOG' => array($this, 'onSyslog'),
+            'LOGROT' => array($this, 'onLogrot'),
             'ACCEPT' => array($this, 'onAccept')
         );
         $menu = new WHA_DialogMenu($text, 15, 60, 12, $items, $opts, $cbs);
@@ -196,8 +195,9 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         $menu->getExitCode();
     }
     // }}}
-    // onApache() {{{
+    // onApache($caller) {{{
     /**
+     * Callback for the APACHE menu item (main menu).
      * @since 0.1
      */
     public function onApache($caller) {
@@ -209,7 +209,6 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         $items = array( 
             'PACKAGE' => 'Apache package name',
             'CONFDIR' => 'Apache configuration directory',
-            'MODDIR'  => 'Apache modules directory',
             'RETURN'  => 'Return to main menu'
         );
         $cbs = array( // callbacks
@@ -221,34 +220,36 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         $menu->run();
     }
     // }}}
-    // onSyslog() {{{
+    // onLogrot($caller) {{{
     /**
+     * Callback for the LOGROT menu item (main menu)
      * @since 0.1
      */
-    public function onSyslog($caller) {
+    public function onLogrot($caller) {
         $opts = array(
             '--backtitle', $this->_btitle,
-            '--title', "Syslog configuration menu"
+            '--title', "Log rotation configuration menu"
         );
         $text = "Select configuration step";
         $items = array( 
-            'PACKAGE' => 'System logger package name',
-            'CONFDIR' => 'System logger configuration directory',
+            'FACILITY' => 'Choose facility used for log rotation',
             'RETURN'  => 'Return to main menu'
         );
         $cbs = array( // callbacks
+            'FACILITY' => array($this,'onLogrotFacility')
         );
         $menu = new WHA_DialogMenu($text, 15, 60, 12, $items, $opts, $cbs);
         $menu->setReturnTag('RETURN');
         $menu->run();
     }
     // }}}
-    // onAccept() {{{
+    // onAccept($caller) {{{
     /**
+     * Callback for the ACCEPT menu item (main menu).
      * @since 0.1
      */
     public function onAccept($caller) {
-        $file = $this->_setup->getCurrentFile();
+        $file = $this->_conf->getCurrentFile();
         if(file_exists($file)) {
             $opts = array(
                 '--backtitle', $this->_btitle,
@@ -259,7 +260,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             $yesno = new WHA_DialogYesno($text, 7, 60, $opts);
             $yesno->run();
             if($yesno-> getExitCode() == DIALOG_OK) {
-                $ok = $this->_setup->saveIniFile(); // save current ini file
+                $ok = $this->_conf->saveIniFile(); // save current ini file
                 if($ok !== true) {
                     $opts2 = $opts;
                     $opts2[4] = "Error";
@@ -276,15 +277,15 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         }
     }
     // }}}
-    // onApachePkgname() {{{
+    // onApachePkgname($caller) {{{
     /**
+     * Callback for the APACHE|PKGNAME menu item (apache menu)
      * @since 0.1
      */
     public function onApachePkgname($caller) {
-        $item = $this->_setup->searchItem(array('apache','pkgname'));
-        if($item === false) {
-            // TODO: what to do here?. Raise error, or create value?
-            throw Exception("That's over!");
+        $item = $this->_conf->searchItem(array('apache','pkgname'));
+        if(! ($item instanceof Config_Container)) {
+            throw Exception('config directive apache/pkgname not found');
         }
         $value = $item->getContent();
 
@@ -301,15 +302,15 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             $item->setContent($inputbox->getValue());
     }
     // }}}
-    // onApacheConfdir() {{{
+    // onApacheConfdir($caller) {{{
     /**
+     * Callback for the APACHE|CONFDIR menu item (apache menu).
      * @since 0.1
      */
     public function onApacheConfdir($caller) {
-        $item = $this->_setup->searchItem(array('apache','confdir'));
-        if(!isset($item)) {
-            // TODO: what to do here?. Raise error, or create value?
-            throw Exception("That's over!");
+        $item = $this->_conf->searchItem(array('apache','confdir'));
+        if(!($item instanceof Config_Container)) {
+            throw Exception('config directive apache/confdir not found');
         }
         $fpath = $item->getContent();
 
@@ -325,12 +326,13 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             $item->setContent($inputbox->getValue());
     }
     // }}}
-    // onApachePkgnameGuess() {{{
+    // onApachePkgnameGuess($caller) {{{
     /**
+     * Callback for the `Guess` button on APACHE|PKGNAME `inputbox`.
      * @since 0.1
      */
     public function onApachePkgnameGuess($caller) {
-        $apaches = $this->_setup->findInstalledApaches($err);
+        $apaches = $this->_conf->findInstalledApaches($err);
         $opts = array( '--backtitle', $this->_btitle, '--title', "");
         if($apaches === false) {
             $opts[3] = "Error";
@@ -341,18 +343,19 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             }
             $msgbox->run();
         } 
-        $this->confirmGuessResult($caller, $apaches, "Apache installation"); 
+        $this->confirmGuessResult($caller, $apaches, "Apache package name"); 
         $caller->resume();
     }
     // }}}
-    // onApacheConfdirGuess() {{{
+    // onApacheConfdirGuess($caller) {{{
     /**
+     * Callback for the `Guess` button on the APACHE|CONFDIR `dselect` widget.
      * @since 0.1
      */
     public function onApacheConfdirGuess($caller) {
         $opts = array( '--backtitle', $this->_btitle, '--title', "");
         $caller->resume();
-        $apache = $this->_setup->searchItemContent(array('apache','pkgname'));
+        $apache = $this->_conf->searchItemContent(array('apache','pkgname'));
         $dirs = array();
         if(!$apache || strlen($apache) == 0) {
             $opts[3] = "Information";
@@ -399,9 +402,60 @@ class WHA_CliCmdSetup extends WHA_CliCmd
 
     }
     // }}}
-    // configmGuessResult() {{{
+    // onLogrotFacility($caller) {{{
     /**
      * Confirm result of some guesses. 
+     *
+     * If `$array` has only one element, display `yesno` dialog to accept or 
+     * decline the value in `$array`. If `$array` has more elements, display 
+     * `radiolist` dialog to let user chose one of the items found in array. In 
+     * any case, if a value is finally accepted, it is being assigned to 
+     * `$receiver` by calling `$receiver->setValue()`.
+     *
+     * @param WHA_Inputbox object which is receiving th evalue
+     * @param array array of values discovered
+     * @param string name of the parameter that was guessed (e.g "config dir")
+     * @since 0.1
+     */
+    public function onLogrotFacility($caller) {
+        $item = $this->_conf->searchItem(array('log-rotation','facility'));
+        if(!($item instanceof Config_Container)) {
+            // TODO: what to do here?. Raise error, or create value?
+            throw Exception('config directive log-rotation/facility not found');
+        }
+        $sel = $item->getContent();
+
+        $opts = array(  '--backtitle', $this->_btitle, 
+                        '--title', "Apache package name");
+        $text = "What facility your system uses to rotate logs?";
+
+        $items = array(
+            'logrotate' => array('(Linux)','off'), 
+            'newsyslog' => array('(FreeBSD)','off')
+        );
+
+        if(!$sel) {
+            $sel = $this->_conf->findAvailLogrotFacility();
+        }
+        if($sel && isset($items[$sel])) {
+            $items[$sel][1] = 'on';
+        }
+
+        $radiolist = new WHA_DialogRadiolist($text, 12, 50, 10, $items, $opts);
+        $radiolist->run();
+        if($radiolist->getExitCode() == DIALOG_OK)
+            $item->setContent($radiolist->selection);
+    }
+    // }}}
+    // confirmGuessResult($caller) {{{
+    /**
+     * Confirm result of some guesses. 
+     *
+     * If `$array` has only one element, display `yesno` dialog to accept or 
+     * decline the value in `$array`. If `$array` has more elements, display 
+     * `radiolist` dialog to let user chose one of the items found in array. In 
+     * any case, if a value is finally accepted, it is being assigned to 
+     * `$receiver` by calling `$receiver->setValue()`.
      *
      * @param WHA_Inputbox object which is receiving th evalue
      * @param array array of values discovered
@@ -414,7 +468,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             $array = array_unique($array);
             $opts[3] = "$what(s) found";
             if (count($array) > 1) {
-                $items = array_fill_keys($array, array("",0));
+                $items = array_fill_keys($array, array("",'off'));
                 $text = "I guess, one of these is your $what. Chose one.";
                 $radiolist = new WHA_DialogRadiolist($text, 12, 50, 10, $items, 
                                                      $opts);

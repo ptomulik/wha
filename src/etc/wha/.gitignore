@@ -1,1 +1,3 @@
-paths.conf
+# these files are generated from *.in files
+tools.ini
+wha.ini

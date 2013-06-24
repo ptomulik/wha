@@ -9,16 +9,16 @@ Note: this is in initial state, nothing works yet. It's placed here just as a
 backup and may be removed at any time.
 
 REQUIREMENTS
-============
+------------
 
 TO COMPILE AND INSTAL SCRIPTS
------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   
   - `GNU make`_ or `BSD make`_
   - sh shell with some standard tools.
 
 TO RUN THE INSTALLED SCRIPTS
-----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  
   - `PHP 5`_,
   - `PEAR Config`_::
@@ -28,7 +28,7 @@ TO RUN THE INSTALLED SCRIPTS
   - unix dialog_ pogram,
 
 TO GENERATE API DOCUMENTATION
------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
   - apigen_::
 
@@ -36,9 +36,9 @@ TO GENERATE API DOCUMENTATION
         pear install pear.apigen.org/apigen
 
 LICENSE
-=======
+-------
 
-Copyright (c) 20013 Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+Copyright (c) 2013 Paweł Tomulik <ptomulik@meil.pw.edu.pl>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

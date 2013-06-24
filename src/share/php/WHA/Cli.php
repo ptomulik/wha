@@ -32,7 +32,11 @@
  * <code>
  * require_once('WHA/Cli.php');
  * $cli = & new WHA_Cli();
- * $cli->cmds['moo'] = array( 'purp' => 'say moo' );
+ * $cli->cmds['moo'] = array( 'purp' => 'say moo', 
+ *                            'help' => "
+ *   much longer, perhaps multiline description of
+ *   say moo command
+ * ");
  * ...
  * </code>
  *
@@ -42,10 +46,10 @@
  *      wha [common options] <command> [options] [args]
  * </code>
  *
- * The class maintains associative array {@link $cops} to describe supported 
- * `common options` and three associative arrays: {@link $cmds}, {@link $opts}, 
- * and {@link $args} to describe supported commands, their `options`, and 
- * positional arguments `args`.
+ * The WHA_Cli object encapsulates an associative array {@link $cops} to 
+ * describe supported `common options` and three associative arrays: {@link 
+ * $cmds}, {@link $opts}, and {@link $args} to describe supported commands, 
+ * their `options`, and positional arguments `args`.
  *
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -85,7 +89,7 @@ class WHA_Cli
      *  Definition of command-line commands.
      *
      *  This is an associative array, whose keys correspond to commands 
-     *  supported by the script. For example, `$cmds['foo']` corresponds 
+     *  supported by the *wha* script. For example, `$cmds['foo']` corresponds 
      *  to the command
      *  <code>
      *       wha foo
@@ -230,7 +234,7 @@ class WHA_Cli
     // }}}
     // $_cops_default {{{
     /**
-     * Default common options {@link $cops}, supported by all commands.
+     * Defaults for common options {@link $cops}, supported by all commands.
      *
      * @var array
      */
@@ -487,7 +491,7 @@ class WHA_Cli
     // helpScriptName() {{{
     /**
      * Convert `$argv[0]` to user-friendly script name, strippig the leading 
-     * path in `$argv[0]` if it is in system's `$PATH`.
+     * path from `$argv[0]` if it is in system's `$PATH`.
      *
      * @param string script name as obtained from `$argv[0]`
      * @return string user-friendly script name
@@ -536,13 +540,16 @@ class WHA_Cli
         if(is_array($this->args) && array_key_exists($cmd, $this->args)) {
             $args = $this->args[$cmd];
             if(is_array($args)) {
-                if(array_key_exists('range', $args)) {
+                if(isset($args['range'])) {
                     $rng = $args['range'];
-                    $min = array_key_exists(0, $rng) ?  $rng[0] : 0;
-                    $max = array_key_exists(1, $rng) ?  $rng[1] : PHP_INT_MAX;
+                    $min = isset($rng[0]) ?  $rng[0] : 0;
+                    $max = isset($rng[1]) ?  $rng[1] : PHP_INT_MAX;
                     if($min === null) $min = 0;
                     if($max === null) $max = PHP_INT_MAX;
                 } 
+            } elseif(is_int($args)) {
+                $min = $args;
+                $max = $args;
             } elseif($args) {
                 $min = 0;
                 $max = PHP_INT_MAX;

@@ -1,0 +1,25 @@
+-----+ website:
+
+Files/data related to virtualhost/site:
+
+  * apache's virtual host config
+  * logrotate/newsyslog config
+  * apache profile
+  * database
+  * document root directory
+
+These above things should be generated from some predefined template. The
+template should define form to ask user for necessary template parameters.
+
+Virtual host templates may be stored under /usr/share/wha/vhost-templates/
+
+-----+ user:
+
+Files related to user (webmaster):
+
+  * entire home tree, especially:
+  * .ssh/authorized_keys
+  * log/xxx.yyy.zzz-*.log
+  * www/xxx.yyy.zzz/*
+
+Some substitutions may be necessary when creating user's files from skel. 
