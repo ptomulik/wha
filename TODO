@@ -1,6 +1,7 @@
------+ website:
+WEBSITE (VIRTUAL HOST)
+----------------------
 
-Files/data related to virtualhost/site:
+Files/data related to virtual host/site:
 
   * apache's virtual host config
   * logrotate/newsyslog config
@@ -8,12 +9,13 @@ Files/data related to virtualhost/site:
   * database
   * document root directory
 
-These above things should be generated from some predefined template. The
+The above things should be generated from some predefined template. The
 template should define form to ask user for necessary template parameters.
 
 Virtual host templates may be stored under /usr/share/wha/vhost-templates/
 
------+ user:
+USER (WEBMASTER)
+----------------
 
 Files related to user (webmaster):
 
@@ -21,5 +23,12 @@ Files related to user (webmaster):
   * .ssh/authorized_keys
   * log/xxx.yyy.zzz-*.log
   * www/xxx.yyy.zzz/*
+  
+Some substitutions may be necessary when creating user's files from skel. File
+ownership and attributes must be modified to comply to sshd sftp-only
+requirements and other custom rules.
+  
+In addition, we should keep track of:
 
-Some substitutions may be necessary when creating user's files from skel. 
+  * contact information to webmaster
+  * user quota (should it be per-vhost or per-user?)
