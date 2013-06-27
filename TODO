@@ -3,11 +3,11 @@ WEBSITE (VIRTUAL HOST)
 
 Files/data related to virtual host/site:
 
-  * apache's virtual host config
+  * apache's virtual host config (and directory config if in separate file)
   * logrotate/newsyslog config
-  * apache profile
-  * database
-  * document root directory
+  * apache profile (rc.conf, what in other systems?)
+  * database (MySQL)
+  * document root directory 
 
 The above things should be generated from some predefined template. The
 template should define form to ask user for necessary template parameters.
