@@ -71,7 +71,7 @@ class WHA_CliCmdFactory
      */
     public static function instance($cli = null) {
         if(!isset(self::$_instance)) {
-            self::$_instance = & new WHA_CliCmdFactory($cli);
+            self::$_instance = new WHA_CliCmdFactory($cli);
         }
         return self::$_instance;
     }
@@ -197,7 +197,7 @@ class WHA_CliCmdFactory
     private function __construct($cli = null) {
         $this->_classes = array();
         if($cli === null)
-            $this->_cli = & new WHA_Cli();
+            $this->_cli = new WHA_Cli();
         else
             $this->_cli = $cli;
     }

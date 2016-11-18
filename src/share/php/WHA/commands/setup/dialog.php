@@ -233,7 +233,7 @@ function wha_command_setup_dialog($script,$command,$common_opts,$opts,$args)
     } 
 
     $root = null;
-    $config = &new Config();
+    $config = new Config();
     if(is_file($file) && is_readable($file)) {
         $root = $config->parseConfig($file,'IniCommented');
         if(!is_a($root, 'Config_Container')) {

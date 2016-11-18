@@ -31,7 +31,7 @@
  * Example:
  * <code>
  * require_once('WHA/Cli.php');
- * $cli = & new WHA_Cli();
+ * $cli = new WHA_Cli();
  * $cli->cmds['moo'] = array( 'purp' => 'say moo', 
  *                            'help' => "
  *   much longer, perhaps multiline description of
