@@ -1,5 +1,4 @@
 apigen_targets = ./api-doc/404.html \
-                  ./api-doc/class-Exception.html \
                   ./api-doc/class-WHA_CliCmdAlreadyRegistered.html \
                   ./api-doc/class-WHA_CliCmdFactoryException.html \
                   ./api-doc/class-WHA_CliCmdFactory.html \
@@ -83,7 +82,6 @@ apigen_targets = ./api-doc/404.html \
                   ./api-doc/function-wha_tool_run.html \
                   ./api-doc/index.html \
                   ./api-doc/package-None.html \
-                  ./api-doc/package-PHP.html \
                   ./api-doc/package-WHA.html \
                   ./api-doc/resources/collapsed.png \
                   ./api-doc/resources/combined.js \
@@ -175,5 +173,4 @@ apigen_targets = ./api-doc/404.html \
                   ./api-doc/source-function-wha_tool_close.html \
                   ./api-doc/source-function-wha_tool.html \
                   ./api-doc/source-function-wha_tool_open.html \
-                  ./api-doc/source-function-wha_tool_run.html \
-                  ./api-doc/tree.html
+                  ./api-doc/source-function-wha_tool_run.html
