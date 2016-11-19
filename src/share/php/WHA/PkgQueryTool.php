@@ -1,22 +1,22 @@
 <?php
 // Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to 
-// deal in the Software without restriction, including without limitation the 
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE
 
 require_once('WHA/Tools.php');
@@ -58,7 +58,7 @@ class WHA_PkgQueryTool
      * @var arrays
      * @since 0.1
      */
-    static private $_supported = array( 
+    static private $_supported = array(
         'dpkg-query',
         'pkg_info'
     );
@@ -110,7 +110,7 @@ class WHA_PkgQueryTool
         }
     }
     // }}}
-    // getSupportedTools() {{{ 
+    // getSupportedTools() {{{
     /**
      * @return array
      * @since 0.1
@@ -119,7 +119,7 @@ class WHA_PkgQueryTool
         return $this->_supported;
     }
     // }}}
-    // getAvailableTools() {{{ 
+    // getAvailableTools() {{{
     /**
      * @return array
      * @since 0.1
@@ -128,7 +128,7 @@ class WHA_PkgQueryTool
         return $this->_available;
     }
     // }}}
-    // getCurrentTool() {{{ 
+    // getCurrentTool() {{{
     /**
      * @return string
      * @since 0.1
@@ -137,7 +137,7 @@ class WHA_PkgQueryTool
         return $this->_tool;
     }
     // }}}
-    // setTool($tool) {{{ 
+    // setTool($tool) {{{
     /**
      * Set the tool.
      *
@@ -166,11 +166,11 @@ class WHA_PkgQueryTool
     // }}}
     // isInstalled() {{{
     /**
-     * Check whether a package is installed. 
+     * Check whether a package is installed.
      *
-     * Return `true` if package is installed, `false` if not, `null` if there 
-     * is no supported tool to perform query or there was a problem with 
-     * process initialization.  Error messages go to `$err', standard output 
+     * Return `true` if package is installed, `false` if not, `null` if there
+     * is no supported tool to perform query or there was a problem with
+     * process initialization.  Error messages go to `$err', standard output
      * from external tools is used internally or discarded.
      *
      * @param string package name
@@ -240,7 +240,7 @@ class WHA_PkgQueryTool
     // }}}
     // globInstalled() {{{
     /**
-     * Find among installed packages the packages matching given glob. Return 
+     * Find among installed packages the packages matching given glob. Return
      * array of package names (empty if none found) or false in case of errors.
      *
      * @param string glob string, e.g "apache*"
@@ -285,8 +285,8 @@ class WHA_PkgQueryTool
     // }}}
     // globReInstalled() {{{
     /**
-     * Find among installed packages the packages matching given glob. Return 
-     * array of package names found matching given regular expression. Return 
+     * Find among installed packages the packages matching given glob. Return
+     * array of package names found matching given regular expression. Return
      * false in case of errors.
      *
      * @param string glob string, e.g "apache*"
@@ -315,7 +315,7 @@ class WHA_PkgQueryTool
  * @param string error messages from package query tool
  * @return bool|null
  * @package WHA
- * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>                              
+ * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @since 0.1
  */
 function wha_pkg_is_installed($pkg, &$err = null)
@@ -329,7 +329,7 @@ function wha_pkg_is_installed($pkg, &$err = null)
  * @param string error messages from package query tool
  * @return array | false
  * @package WHA
- * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>                              
+ * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @since 0.1
  */
 function wha_pkg_list_files($pkg, &$err = null)
@@ -343,7 +343,7 @@ function wha_pkg_list_files($pkg, &$err = null)
  * @param string error messages from package query tool
  * @return array | false
  * @package WHA
- * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>                              
+ * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @since 0.1
  */
 function wha_pkg_glob_installed($glob, &$err = null)
@@ -358,7 +358,7 @@ function wha_pkg_glob_installed($glob, &$err = null)
  * @param string error messages from package query tool
  * @return array | false
  * @package WHA
- * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>                              
+ * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @since 0.1
  */
 function wha_pkg_glob_re_installed($glob, $re, &$err = null)

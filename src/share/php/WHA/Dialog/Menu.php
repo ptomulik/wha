@@ -1,22 +1,22 @@
 <?php
 // Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to 
-// deal in the Software without restriction, including without limitation the 
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE
 
 require_once('WHA/Dialog/Widget.php');
@@ -25,14 +25,14 @@ require_once('WHA/Dialog/Functions.php');
 /**
  * Menu dialog.
  *
- * This class implements menu dialog. As in UNIX `dialog program`, the menu has 
- * tags and corresponding items. Tag is a unique string idenifying menu entry. 
+ * This class implements menu dialog. As in UNIX `dialog program`, the menu has
+ * tags and corresponding items. Tag is a unique string idenifying menu entry.
  * In this implementation we use associative arrays to represent menu entries.
- * We also allow to associate callbacks with tags, so that user functions may 
- * be invoked when menu entry is selected. 
+ * We also allow to associate callbacks with tags, so that user functions may
+ * be invoked when menu entry is selected.
  *
- * One of the menu entries may act as so-called "return entry". When this entry 
- * is pressed, the control is returned from {@link run()} method to the caller 
+ * One of the menu entries may act as so-called "return entry". When this entry
+ * is pressed, the control is returned from {@link run()} method to the caller
  * and the exit code ({@link getExitCode()}) is set to zero (user pressed OK).
  * To define the return tag, use {@link setReturnTag()}.
  *
@@ -57,7 +57,7 @@ class WHA_DialogMenu extends WHA_DialogWidget
     // $items{{{
     /**
      * An associative array of tag => item  pairs which defines menu entries.
-     * Tags and items are strings and have meaning as defined in manual page of 
+     * Tags and items are strings and have meaning as defined in manual page of
      * `dialog` program.
      *
      * @var array
@@ -94,9 +94,9 @@ class WHA_DialogMenu extends WHA_DialogWidget
      * @since 0.1
      * @throw {@link WHA_DialogException}
      */
-    public function __construct($text = null, $height = null, $width = null, 
+    public function __construct($text = null, $height = null, $width = null,
                                 $menu_height = null, $items = null,
-                                $options = null, $callbacks = null, 
+                                $options = null, $callbacks = null,
                                 $rtag = null, $sel = NULL) {
 
         parent::__construct($text, $height, $width, $options);
@@ -173,17 +173,17 @@ class WHA_DialogMenu extends WHA_DialogWidget
     /**
      * Associate menu items with callbacks.
      *
-     * The `$cbs` argument should be an associative array, with keys 
-     * corresponding to menu tags and values being callable. A callback 
-     * should accept single argument. The menu object will be passed to 
-     * callback as an argument. The value returned by callback is ignored. 
+     * The `$cbs` argument should be an associative array, with keys
+     * corresponding to menu tags and values being callable. A callback
+     * should accept single argument. The menu object will be passed to
+     * callback as an argument. The value returned by callback is ignored.
      *
      * @param array array of callable objects
      * @throw {@link WHA_DialogException}
      * @since 0.1
      */
     public function setMenuCallbacks($cbs) {
-        if(isset($cbs) && !is_array($cbs)) 
+        if(isset($cbs) && !is_array($cbs))
             throw new WHA_DialogException('expected array but got '.gettype($cbs));
         if(is_array($cbs)) {
             foreach($cbs as $tag => $cb) {

@@ -1,22 +1,22 @@
 <?php
 // Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to 
-// deal in the Software without restriction, including without limitation the 
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE
 
 
@@ -103,11 +103,11 @@ class WHA_ConfEdit {
     // }}}
     // loadIniFile($file) {{{
     /**
-     * Load *.ini file to this object. Return `true` on success `PEAR_Error` on 
-     * failure. 
+     * Load *.ini file to this object. Return `true` on success `PEAR_Error` on
+     * failure.
      *
      * @param string path to the config file
-     * @return bool|PEAR_Error 
+     * @return bool|PEAR_Error
      * @since 0.1
      */
     public function loadIniFile($file) {
@@ -124,7 +124,7 @@ class WHA_ConfEdit {
     /**
      * Save current configuration to file.
      *
-     * On success return `true`, on error `PEAR_Error` is returned. If the 
+     * On success return `true`, on error `PEAR_Error` is returned. If the
      * object is not initialized, exception is thrown.
      * `false`.
      *
@@ -167,21 +167,21 @@ class WHA_ConfEdit {
     // }}}
     // searchItem($args) {{{
     /**
-     * Shorthand to Config_Container::searchPath(). Search config for an item. 
+     * Shorthand to Config_Container::searchPath(). Search config for an item.
      *
-     * This method tries to find an item by following a given path from the 
+     * This method tries to find an item by following a given path from the
      * current container.
      *
-     * This method takes as many parameters as is needed to define your path to 
-     * the requested item. The format is array (item1, item2, ..., itemN). 
-     * Items can be strings or arrays. Strings will match the item name, while 
-     * arrays will match 'name' and/or 'attributes' properties of the requested 
+     * This method takes as many parameters as is needed to define your path to
+     * the requested item. The format is array (item1, item2, ..., itemN).
+     * Items can be strings or arrays. Strings will match the item name, while
+     * arrays will match 'name' and/or 'attributes' properties of the requested
      * item.
      *
-     * @param mixed Array of strings or arrays of items to match in the order 
-     *              they will be matched, separated by commas. It may also be 
+     * @param mixed Array of strings or arrays of items to match in the order
+     *              they will be matched, separated by commas. It may also be
      *              a string in form `parent/child`.
-     * @return mixed reference to item found or `false` when not found, 
+     * @return mixed reference to item found or `false` when not found,
      *              PEAR_Error if `$args` is of invalid type.
      * @since 0.1
      */
@@ -196,9 +196,9 @@ class WHA_ConfEdit {
     // }}}
     // searchItemContent($args) {{{
     /**
-     * Find a config item and return it's content. 
+     * Find a config item and return it's content.
      *
-     * @param mixed Strings or arrays of item to match in the order they will 
+     * @param mixed Strings or arrays of item to match in the order they will
      *              be matched, separated by commas
      * @return mixed value of the item found or `null` if not found.
      * @since 0.1
@@ -213,7 +213,7 @@ class WHA_ConfEdit {
     /**
      * Find the name(s) of installed apache package(s).
      *
-     * @return array|false  array of strings if package(s) found, empty array 
+     * @return array|false  array of strings if package(s) found, empty array
      *                      if not, `false` if an error occurred.
      * @since 0.1
      */
@@ -238,7 +238,7 @@ class WHA_ConfEdit {
             if($result == 0 && !$err && is_string($out) && strlen($out) > 0) {
                 $sel = $facility;
                 break;
-            } 
+            }
         }
         return $sel;
     }

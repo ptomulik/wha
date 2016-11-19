@@ -1,22 +1,22 @@
 <?php
 // Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to 
-// deal in the Software without restriction, including without limitation the 
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE
 
 
@@ -38,9 +38,9 @@ class WHA_CliCmdFactory
 {
     // $_classes {{{
     /**
-     * Associative array of registered classes. 
+     * Associative array of registered classes.
      *
-     * Each item is of the form $cmd => $class, where $cmd is command name, 
+     * Each item is of the form $cmd => $class, where $cmd is command name,
      * and $class is (string) class name which implements given command.
      * @var array
      * @since 0.1
@@ -101,11 +101,11 @@ class WHA_CliCmdFactory
     /**
      * @param string    name of the class implementing given command,
      * @param string    command name,
-     * @param array     description of the command, this is value of single 
-     *                  item for {@link WHA_Cli::$cmds} 
-     * @param array     definition of command options, this is value of single 
+     * @param array     description of the command, this is value of single
+     *                  item for {@link WHA_Cli::$cmds}
+     * @param array     definition of command options, this is value of single
      *                  item for {@link WHA_Cli::$opts}
-     * @param array     definition of positional arguments, this is value of 
+     * @param array     definition of positional arguments, this is value of
      *                  single item for {@link WHA_Cli::$args}
      *
      * @throw {@link WHA_CliCmdAlreadyRegistered},
@@ -164,10 +164,10 @@ class WHA_CliCmdFactory
     // }}}
     // createCmdFromArgv($argv, &$err = null) {{{
     /**
-     * Create command object {@link WHA_CliCmd} according to command-line 
+     * Create command object {@link WHA_CliCmd} according to command-line
      * values given given in `$argv`.
      *
-     * On success returns {@link WHA_CliCmd} object. If `$argv` is invalid, 
+     * On success returns {@link WHA_CliCmd} object. If `$argv` is invalid,
      * returns `false`. If some error in logics (bug) occurrs,
      * {@link WHA_CliCmdFactoryException} might be thrown.
      *
@@ -182,8 +182,8 @@ class WHA_CliCmdFactory
     {
         $x = $this->_cli->parseArgv($argv, $err);
         if($x === FALSE) return FALSE;
-        list($scr, $cops, $cmd, $opts, $args) = $x; 
-        // The exception should newer happen. If it does, that means that the 
+        list($scr, $cops, $cmd, $opts, $args) = $x;
+        // The exception should newer happen. If it does, that means that the
         // arrays $this->_classes and $this->_cli->cmds are inconsistent (bug).
         $class = $this->getCmdClass($cmd);
         return new $class($scr, $cops, $cmd, $opts, $args);

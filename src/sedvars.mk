@@ -48,9 +48,9 @@ wha_sed_configure_ac_variables = \
 	s:[@]TR[@]:$(TR):g \
 	s:[@]UNIQ[@]:$(UNIQ):g \
 	s:[@]WC[@]:$(WC):g \
-	s:[@]WHA_PHP_INCLUDE_PATH[@]:$(WHA_PHP_INCLUDE_PATH):g 
+	s:[@]WHA_PHP_INCLUDE_PATH[@]:$(WHA_PHP_INCLUDE_PATH):g
 
-  
+
 ##############################################################################
 # wha_sed_variables:
 #
@@ -66,7 +66,7 @@ $(wha_sed_configure_ac_variables)
 # break parallel builds.
 _sedvars.tmp::
 	@echo 'echo $$(wha_sed_variables) > _sedvars.tmp'
-	@echo $(wha_sed_variables) | $(SED) -e 's/^ \+//' | $(TR) -s ' ' '\n' > $@ 
+	@echo $(wha_sed_variables) | $(SED) -e 's/^ \+//' | $(TR) -s ' ' '\n' > $@
 
 # create _sedvars.sed if it doesn't exist or its content is outdated
 _sedvars.sed: _sedvars.tmp

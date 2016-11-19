@@ -32,7 +32,7 @@ php_sources = $(srcdir)/php/WHA.php \
               $(srcdir)/php/WHA/main.php \
               $(srcdir)/php/WHA/object.php \
               $(srcdir)/php/WHA/shell_config_file_annotations.php \
-              $(srcdir)/php/WHA/wha.php 
+              $(srcdir)/php/WHA/wha.php
 
 php_in_sources = $(srcdir)/php/WHA/version.php.in
 php_generated	= php/WHA/version.php

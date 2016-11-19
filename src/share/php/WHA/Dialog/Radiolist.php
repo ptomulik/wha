@@ -1,22 +1,22 @@
 <?php
 // Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to 
-// deal in the Software without restriction, including without limitation the 
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE
 
 require_once('WHA/Dialog/Widget.php');
@@ -25,13 +25,13 @@ require_once('WHA/Dialog/Functions.php');
 /**
  * Radiolist dialog.
  *
- * This class implements radiolist dialog. As in UNIX `dialog program`, the 
- * radiolist has tags and corresponding items. Tag is a unique string 
- * idenifying radiolist entry. In this implementation we use associative arrays 
- * to represent radiolist entries. Array keys are tags, array values are 
- * 2-element arrays with `0 =>`item` and `1 => status`.  We also allow to 
- * associate callbacks with  tags, so that user functions may  be invoked when 
- * radiolist entry is * selected. 
+ * This class implements radiolist dialog. As in UNIX `dialog program`, the
+ * radiolist has tags and corresponding items. Tag is a unique string
+ * idenifying radiolist entry. In this implementation we use associative arrays
+ * to represent radiolist entries. Array keys are tags, array values are
+ * 2-element arrays with `0 =>`item` and `1 => status`.  We also allow to
+ * associate callbacks with  tags, so that user functions may  be invoked when
+ * radiolist entry is * selected.
  *
  * @author Pawel Tomulik <ptomuilik@meil.pw.edu.pl>
  * @package WHA
@@ -53,8 +53,8 @@ class WHA_DialogRadiolist extends WHA_DialogWidget
     // }}}
     // $items{{{
     /**
-     * An associative array of `tag => array(item, status)` pairs which defines 
-     * radiolist entries. Tags and items are strings, status is boolean. They 
+     * An associative array of `tag => array(item, status)` pairs which defines
+     * radiolist entries. Tags and items are strings, status is boolean. They
      * have meaning as defined in manual page of `dialog` program.
      *
      * @var array
@@ -90,9 +90,9 @@ class WHA_DialogRadiolist extends WHA_DialogWidget
      * @since 0.1
      * @throw {@link WHA_DialogException}
      */
-    public function __construct($text = null, $height = null, $width = null, 
+    public function __construct($text = null, $height = null, $width = null,
                                 $radiolist_height = null, $items = null,
-                                $options = null, $callbacks = null, 
+                                $options = null, $callbacks = null,
                                 $sel = NULL) {
 
         parent::__construct($text, $height, $width, $options);
@@ -156,17 +156,17 @@ class WHA_DialogRadiolist extends WHA_DialogWidget
     /**
      * Associate radiolist items with callbacks.
      *
-     * The `$cbs` argument should be an associative array, with keys 
-     * corresponding to radiolist tags and values being callable. A callback 
-     * should accept single argument. The radiolist object will be passed to 
-     * callback as an argument. The value returned by callback is ignored. 
+     * The `$cbs` argument should be an associative array, with keys
+     * corresponding to radiolist tags and values being callable. A callback
+     * should accept single argument. The radiolist object will be passed to
+     * callback as an argument. The value returned by callback is ignored.
      *
      * @param array array of callable objects
      * @throw {@link WHA_DialogException}
      * @since 0.1
      */
     public function setRadiolistCallbacks($cbs) {
-        if(isset($cbs) && !is_array($cbs)) 
+        if(isset($cbs) && !is_array($cbs))
             throw new WHA_DialogException('expected array but got '.gettype($cbs));
         if(is_array($cbs)) {
             foreach($cbs as $tag => $cb) {

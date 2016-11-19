@@ -1,23 +1,23 @@
 <?php
 
 // Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to 
-// deal in the Software without restriction, including without limitation the 
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE
 
 
@@ -43,7 +43,7 @@ function wha_dialog_addslashes($str)
 }
 
 /**
- * Start the UNIX `dialog` program and return resource object representing the 
+ * Start the UNIX `dialog` program and return resource object representing the
  * new process.
  *
  * @param array options/arguments to dialog's CLI,
@@ -59,15 +59,15 @@ function wha_dialog_addslashes($str)
 function wha_dialog_open($args, &$pipes, $stdin = STDIN, $stdout = STDOUT)
 {
     $descriptorspec = array(
-        0 => $stdin, 
-        1 => $stdout, 
-        2 => array("pipe", "w"), 
-        3 => array("pipe", "w") 
+        0 => $stdin,
+        1 => $stdout,
+        2 => array("pipe", "w"),
+        3 => array("pipe", "w")
     );
 
     $dialog = wha_tool('dialog');
     $noescape = ':^[a-zA-Z0-9_=-]+$:';
-    $args = array_map(function($a) use ($noescape) { 
+    $args = array_map(function($a) use ($noescape) {
         return preg_match($noescape,$a) ? $a : escapeshellarg($a);
     }, $args);
     $dialogcom = array_merge(array($dialog, '--output-fd', '3'), $args);
@@ -85,7 +85,7 @@ function wha_dialog_open($args, &$pipes, $stdin = STDIN, $stdout = STDOUT)
  * @param array     pipes for communication with `dialog`,
  * @param string    output produced by `dialog` command,
  * @param string    error messages produced by `dialog` command,
- * @return int      exit code from `dialog`, (more precise, the value returned 
+ * @return int      exit code from `dialog`, (more precise, the value returned
  *                  by `proc_close()`),
  *
  * @package WHA
@@ -132,7 +132,7 @@ function wha_dialog_close($process, $pipes, &$out=null, &$err=null)
  * @param string    error messages produced by `dialog` command,
  * @param file file descriptor to bind to dialog's STDIN,
  * @param file descriptor to redirect dialog's stdout to
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -161,7 +161,7 @@ function wha_dialog($args, &$out=null, &$err=null, $stdin = STDIN,
  * @param int day of month,
  * @param int month number,
  * @param int year,
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -169,8 +169,8 @@ function wha_dialog($args, &$out=null, &$err=null, $stdin = STDIN,
  */
 function wha_dialog_calendar(&$out, &$err, $text, $height, $width,
     &$day, &$month, &$year, $common_options = array())
-{ 
-    $calendar_options = array('--calendar', $text, $height, $width, $day, 
+{
+    $calendar_options = array('--calendar', $text, $height, $width, $day,
         $month, $year);
     $args = array_merge($common_options, $calendar_options);
     $result = wha_dialog($args, $out, $err);
@@ -195,15 +195,15 @@ function wha_dialog_calendar(&$out, &$err, $text, $height, $width,
  * @param string text argument to `dialog` command,
  * @param int height argument to dialog command,
  * @param int width argument to dialog command,
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @since 0.1
  */
-function wha_dialog_checklist(&$out, &$err, $text, $height, $width, 
+function wha_dialog_checklist(&$out, &$err, $text, $height, $width,
     $list_height, &$items, $common_options = array())
-{ 
+{
     $checklist_options = array('--checklist',$text,$height,$width,$list_height);
     $checklist_items = array();
     foreach($items as $key => $pair) {
@@ -235,13 +235,13 @@ function wha_dialog_checklist(&$out, &$err, $text, $height, $width,
  * @param int height argument to `dialog` command,
  * @param int width argument to `dialog` command,
  * @param array common options to `dialog` command,
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @since 0.1
  */
-function wha_dialog_dselect(&$out, &$err, $filepath, $height, $width, 
+function wha_dialog_dselect(&$out, &$err, $filepath, $height, $width,
     $common_options = array())
 {
     $dselect_options = array('--dselect', $filepath, $height, $width);
@@ -261,15 +261,15 @@ function wha_dialog_dselect(&$out, &$err, $filepath, $height, $width,
  * @param int formheight argument to `dialog` command,
  * @param array items for the form `dialog`, must be array of 8-element arrays,
  * @param array common options to `dialog` command,
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @since 0.1
  */
-function wha_dialog_form(&$out, &$err, $text, $height, $width, $formheight, 
+function wha_dialog_form(&$out, &$err, $text, $height, $width, $formheight,
     &$items, $common_options=array())
-{ 
+{
     $form_options = array('--form', $text, $height, $width, $formheight);
     $form_items = array();
     foreach($items as $key => $tuple) {
@@ -277,7 +277,7 @@ function wha_dialog_form(&$out, &$err, $text, $height, $width, $formheight,
         $form_items[] = $tuple[1];  // x
         $form_items[] = $tuple[2];  // y
         $form_items[] = $tuple[3];  // item
-        $form_items[] = $tuple[4];  // x 
+        $form_items[] = $tuple[4];  // x
         $form_items[] = $tuple[5];  // y
         $form_items[] = $tuple[6];  // flen
         $form_items[] = $tuple[7];  // ilen
@@ -306,13 +306,13 @@ function wha_dialog_form(&$out, &$err, $text, $height, $width, $formheight,
  * @param int height argument to `dialog` command,
  * @param int width argument to `dialog` command,
  * @param array common options to `dialog` command
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @since 0.1
  */
-function wha_dialog_fselect(&$out, &$err, $filepath, $height, $width, 
+function wha_dialog_fselect(&$out, &$err, $filepath, $height, $width,
     $common_options = array())
 {
     $fselect_options = array('--fselect', $filepath, $height, $width);
@@ -329,7 +329,7 @@ function wha_dialog_fselect(&$out, &$err, $filepath, $height, $width,
  * @param file file descriptor to bind to dialog's STDIN,
  * @param string text argument to gauge dialog,
  * @param int heigh argument to `dialog` command,
- * @param int width argument to `dialog` command, 
+ * @param int width argument to `dialog` command,
  * @param int initial percentage,
  * @param array common options to `dialog` command
  * @return resource a resource representing newly created `dialog` process,
@@ -339,7 +339,7 @@ function wha_dialog_fselect(&$out, &$err, $filepath, $height, $width,
  */
 function wha_dialog_gauge_open(&$pipes, $stdin, $text, $height, $width,
     $percent = null, $common_options = array())
-{ 
+{
     $gauge_options = array('--gauge', $text, $height, $width);
     if($percent !== null) {
         $gauge_options[] = $percent;
@@ -356,7 +356,7 @@ function wha_dialog_gauge_open(&$pipes, $stdin, $text, $height, $width,
  * @param
  * @param
  * @param
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -375,7 +375,7 @@ function wha_dialog_gauge_close($process, $pipes, &$err=null)
  * @param int height argument to `dialog` command,
  * @param int width argument to `dialog` command,
  * @param array common options to `dialog` command
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -383,7 +383,7 @@ function wha_dialog_gauge_close($process, $pipes, &$err=null)
  */
 function wha_dialog_infobox(&$err, $text, $height, $width,
     $common_options = array())
-{ 
+{
     $infobox_options = array('--infobox', $text, $height, $width);
     $args = array_merge($common_options, $infobox_options);
     $result = wha_dialog($args, $out, $err);
@@ -400,7 +400,7 @@ function wha_dialog_infobox(&$err, $text, $height, $width,
  * @param int width argument to `dialog` command,
  * @param string initial string for the inputbox,
  * @param array common options to `dialog` command
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -408,7 +408,7 @@ function wha_dialog_infobox(&$err, $text, $height, $width,
  */
 function wha_dialog_inputbox(&$out, &$err, $text, $height, $width,
     $init = null, $common_options = array())
-{ 
+{
     $inputbox_options = array('--inputbox', $text, $height, $width);
     if($init !== null) {
         $inputbox_options[] = $init;
@@ -427,10 +427,10 @@ function wha_dialog_inputbox(&$out, &$err, $text, $height, $width,
  * @param int height argument to `dialog` command,
  * @param int width argument to `dialog` command,
  * @param int menu_height argument to `dialog` command,
- * @param array items for the menu, must be associative array, keys serve as 
+ * @param array items for the menu, must be associative array, keys serve as
  *              menuy tags and values as menu items
  * @param array common options to `dialog` command
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -438,7 +438,7 @@ function wha_dialog_inputbox(&$out, &$err, $text, $height, $width,
  */
 function wha_dialog_inputmenu(&$out, &$err, $text, $height, $width,
     $menu_height, &$items, $common_options = array())
-{ 
+{
     $menu_options = array('--inputmenu', $text, $height, $width, $menu_height);
     $menu_items = array();
     foreach($items as $key => $val) {
@@ -457,7 +457,7 @@ function wha_dialog_inputmenu(&$out, &$err, $text, $height, $width,
             }
         }
         if($matches === null) {
-            // this shouldnt happen, if it does, then our regular expression is 
+            // this shouldnt happen, if it does, then our regular expression is
             // probably wrong...
             $err = "wha_dialog_inputmenu(): internal error, don't know which item".
                 " to rename";
@@ -476,10 +476,10 @@ function wha_dialog_inputmenu(&$out, &$err, $text, $height, $width,
  * @param int height argument to `dialog` command,
  * @param int width argument to `dialog` command,
  * @param int menu_height argument to `dialog` command,
- * @param array items for the menu, must be associative array, keys serve as 
+ * @param array items for the menu, must be associative array, keys serve as
  *              menuy tags and values as menu items,
  * @param array common options to `dialog` command
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -487,7 +487,7 @@ function wha_dialog_inputmenu(&$out, &$err, $text, $height, $width,
  */
 function wha_dialog_menu(&$out, &$err, $text, $height, $width, $menu_height,
     $items, $common_options = array())
-{ 
+{
     $menu_options = array('--menu', $text, $height, $width, $menu_height);
     $menu_items = array();
     foreach($items as $key => $val) {
@@ -510,7 +510,7 @@ function wha_dialog_menu(&$out, &$err, $text, $height, $width, $menu_height,
  * @param int formheight argument to `dialog` command,
  * @param array items for the mixedform, must be an array of 9-element arrays,
  * @param array common options to `dialog` command
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -518,7 +518,7 @@ function wha_dialog_menu(&$out, &$err, $text, $height, $width, $menu_height,
  */
 function wha_dialog_mixedform(&$out, &$err, $text, $height, $width,
     $formheight, &$items, $common_options=array())
-{ 
+{
     $form_options = array('--mixedform', $text, $height, $width, $formheight);
     $form_items = array();
     foreach($items as $key => $tuple) {
@@ -526,7 +526,7 @@ function wha_dialog_mixedform(&$out, &$err, $text, $height, $width,
         $form_items[] = $tuple[1];  // x
         $form_items[] = $tuple[2];  // y
         $form_items[] = $tuple[3];  // item
-        $form_items[] = $tuple[4];  // x 
+        $form_items[] = $tuple[4];  // x
         $form_items[] = $tuple[5];  // y
         $form_items[] = $tuple[6];  // flen
         $form_items[] = $tuple[7];  // ilen
@@ -557,15 +557,15 @@ function wha_dialog_mixedform(&$out, &$err, $text, $height, $width,
  * @param int percen argument to `dialog` command,
  * @param array items for the mixedgauge, must be an array of 2-element arrays,
  * @param array common options to `dialog` command
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @since 0.1
  */
-function wha_dialog_mixedgauge(&$err, $text, $height, $width, $percent, 
+function wha_dialog_mixedgauge(&$err, $text, $height, $width, $percent,
     $items, $common_options = array())
-{ 
+{
     $mixedgauge_options = array('--mixedgauge', $text, $height, $width, $percent);
     $mixedgauge_items = array();
     foreach($items as $pair) {
@@ -585,7 +585,7 @@ function wha_dialog_mixedgauge(&$err, $text, $height, $width, $percent,
  * @param int height argument to `dialog` command,
  * @param int width argument to `dialog` command,
  * @param array common options to `dialog` command
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -593,7 +593,7 @@ function wha_dialog_mixedgauge(&$err, $text, $height, $width, $percent,
  */
 function wha_dialog_msgbox(&$err, $text, $height, $width,
     $common_options = array())
-{ 
+{
     $msgbox_options = array('--msgbox', $text, $height, $width);
     $args = array_merge($common_options, $msgbox_options);
     $result = wha_dialog($args, $out, $err);
@@ -609,7 +609,7 @@ function wha_dialog_msgbox(&$err, $text, $height, $width,
  * @param int width argument to `dialog` command,
  * @param int seconds argument to `dialog` command,
  * @param array common options to `dialog` command,
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -617,7 +617,7 @@ function wha_dialog_msgbox(&$err, $text, $height, $width,
  */
 function wha_dialog_pause(&$err, $text, $height, $width, $seconds,
     $common_options = array())
-{ 
+{
     $pause_options = array('--pause', $text, $height, $width, $seconds);
     $args = array_merge($common_options, $pause_options);
     $result = wha_dialog($args, $out, $err);
@@ -634,7 +634,7 @@ function wha_dialog_pause(&$err, $text, $height, $width, $seconds,
  * @param int width argument to `dialog` command,
  * @param string initial value of password for `dialog` command,
  * @param array common options to `dialog` command,
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -642,7 +642,7 @@ function wha_dialog_pause(&$err, $text, $height, $width, $seconds,
  */
 function wha_dialog_passwordbox(&$out, &$err, $text, $height, $width,
     $init = null, $common_options = array())
-{ 
+{
     $passwordbox_options = array('--passwordbox', $text, $height, $width);
     if($init !== null) {
         $passwordbox_options[] = $init;
@@ -663,7 +663,7 @@ function wha_dialog_passwordbox(&$out, &$err, $text, $height, $width,
  * @param int formheight argument to `dialog` command,
  * @param array items for the form `dialog`, must be array of 8-element arrays,
  * @param array common options to `dialog` command,
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -671,7 +671,7 @@ function wha_dialog_passwordbox(&$out, &$err, $text, $height, $width,
  */
 function wha_dialog_passwordform(&$out, &$err, $text, $height, $width,
     $formheight, &$items, $common_options=array())
-{ 
+{
     $form_options = array('--passwordform', $text, $height, $width, $formheight);
     $form_items = array();
     foreach($items as $key => $tuple) {
@@ -679,7 +679,7 @@ function wha_dialog_passwordform(&$out, &$err, $text, $height, $width,
         $form_items[] = $tuple[1];  // x
         $form_items[] = $tuple[2];  // y
         $form_items[] = $tuple[3];  // item
-        $form_items[] = $tuple[4];  // x 
+        $form_items[] = $tuple[4];  // x
         $form_items[] = $tuple[5];  // y
         $form_items[] = $tuple[6];  // flen
         $form_items[] = $tuple[7];  // ilen
@@ -708,19 +708,19 @@ function wha_dialog_passwordform(&$out, &$err, $text, $height, $width,
  * @param int height argument to `dialog` command,
  * @param int width argument to `dialog` command,
  * @param int radiolist_height argument to `dialog` command,
- * @param array items for the form `dialog`, must be an associative array with 
+ * @param array items for the form `dialog`, must be an associative array with
  *              2-element arrays as values,
  * @param array common options to `dialog` command,
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @since 0.1
  */
-function wha_dialog_radiolist(&$out, &$err, $text, $height, $width, 
+function wha_dialog_radiolist(&$out, &$err, $text, $height, $width,
     $radiolist_height, $items, $common_options = array())
-{ 
-    $radiolist_options = array('--radiolist', $text, $height, $width, 
+{
+    $radiolist_options = array('--radiolist', $text, $height, $width,
         $radiolist_height);
     $radiolist_items = array();
     foreach($items as $key => $pair) {
@@ -745,7 +745,7 @@ function wha_dialog_radiolist(&$out, &$err, $text, $height, $width,
  * @param int minute argument to `dialog` command,
  * @param int the `second` argument to `dialog` command,
  * @param array common options to `dialog` command,
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -754,8 +754,8 @@ function wha_dialog_radiolist(&$out, &$err, $text, $height, $width,
 function wha_dialog_timebox(&$out, &$err, $text, $height, $width = null,
     &$hour = null, &$min = null, &$sec = null,
     $common_options = array())
-{ 
-    $timebox_options = array('--timebox', $text, $height, $width, $hour, 
+{
+    $timebox_options = array('--timebox', $text, $height, $width, $hour,
         $min, $sec);
     $args = array_merge($common_options, $timebox_options);
     $result = wha_dialog($args, $out, $err);
@@ -780,7 +780,7 @@ function wha_dialog_timebox(&$out, &$err, $text, $height, $width = null,
  * @param int height argument to `dialog` command,
  * @param int width argument to `dialog` command,
  * @param array common options to `dialog` command,
- * @return int  exit code form `dialog` command (more precise, a value returned 
+ * @return int  exit code form `dialog` command (more precise, a value returned
  *              by `proc_close()`).
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -788,7 +788,7 @@ function wha_dialog_timebox(&$out, &$err, $text, $height, $width = null,
  */
 function wha_dialog_yesno(&$err, $text, $height, $width,
     $common_options = array())
-{ 
+{
     $yesno_options = array('--yesno', $text, $height, $width);
     $args = array_merge($common_options, $yesno_options);
     $result = wha_dialog($args, $out, $err);

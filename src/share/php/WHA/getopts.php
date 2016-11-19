@@ -1,22 +1,22 @@
 <?php
 // Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to 
-// deal in the Software without restriction, including without limitation the 
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE
 
 
@@ -32,7 +32,7 @@ function wha_parse_args_get_args_range($cmd, $arguments)
                 $rng = $arguments['range'];
                 $args_min = array_key_exists(0, $rng) ?  $rng[0] : 0;
                 $args_max = array_key_exists(1, $rng) ?  $rng[1] : 65535;
-            } 
+            }
         } elseif ($arguments) {
             $args_min = 0;
             $args_max = 65536;
@@ -68,7 +68,7 @@ function wha_parse_args($argc, $argv, &$err, $commands, $opts, $args=array())
                     if ($x_optval_opt !== null && $x_optval_req === TRUE) {
                         $err = "option '" . $x_optval_opt . "' requires a value";
                         return FALSE;
-                    } 
+                    }
 
                     if (array_key_exists($arg, $x_opts[$x_sect])) {
                         $err = "repeated option ".$arg." (in ". $x_sect . ")\n";
@@ -115,11 +115,11 @@ function wha_parse_args($argc, $argv, &$err, $commands, $opts, $args=array())
                             $x_args[$arg] = array( );
                             $x_sect = $arg;
 
-                            list($x_args_min, $x_args_max) 
+                            list($x_args_min, $x_args_max)
                                 = wha_parse_args_get_args_range($x_command, $args);
 
                         } else {
-                            $err = 'unsupported ' . 
+                            $err = 'unsupported ' .
                                 ((strlen($arg)>0 && $arg[0] == '-') ?  'option' : 'command') .
                                 " '". $arg . "'";
                             return FALSE;
@@ -147,7 +147,7 @@ function wha_parse_args($argc, $argv, &$err, $commands, $opts, $args=array())
     if ($x_optval_opt !== null && $x_optval_req === TRUE) {
         $err = "option '" . $x_optval_opt . "' requires a value";
         return FALSE;
-    } 
+    }
 
     // Do we have all required arguments for our command
     if(count($x_args[$x_command]) < $x_args_min) {

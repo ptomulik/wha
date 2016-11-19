@@ -1,22 +1,22 @@
 <?php
 // Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to 
-// deal in the Software without restriction, including without limitation the 
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE
 
 
@@ -66,7 +66,7 @@ function wha_command_setup_dialog_apache(&$root, $opts, $args)
     $text = "Choose action to take";
     $title = "Settings related to apache";
     $btitle = "WebHostAdm Setup";
-    $dlg_opts = array('--title', $title, '--backtitle', $btitle, 
+    $dlg_opts = array('--title', $title, '--backtitle', $btitle,
         '--default-item', 'PACKAGE');
     $done = FALSE;
     while(!$done) {
@@ -123,7 +123,7 @@ function wha_command_setup_dialog_syslog(&$root, $opts, $args)
     $text = "Choose action to take";
     $title = "Settings related to syslog";
     $btitle = "WebHostAdm Setup";
-    $dlg_opts = array('--title', $title, '--backtitle', $btitle, 
+    $dlg_opts = array('--title', $title, '--backtitle', $btitle,
         '--default-item', 'PACKAGE');
     $done = FALSE;
     while(!$done) {
@@ -172,7 +172,7 @@ function wha_command_setup_dialog_main($file, &$config, &$root, $opts, $args)
     $text = "Choose configuration step";
     $title = "Main configuration menu";
     $btitle = "WebHostAdm Setup";
-    $dlg_opts = array('--title', $title, '--backtitle', $btitle, 
+    $dlg_opts = array('--title', $title, '--backtitle', $btitle,
         '--default-item', 'APACHE');
 
     $done = FALSE;
@@ -186,7 +186,7 @@ function wha_command_setup_dialog_main($file, &$config, &$root, $opts, $args)
                 // TODO: create directoriy if doesn't exists
                 $res = $config->writeConfig($file, 'IniCommented');
                 if($res !== TRUE) {
-                    $dlg_opts2 = array('--backtitle', $btitle, '--title', 
+                    $dlg_opts2 = array('--backtitle', $btitle, '--title',
                         "$title - error");
                     if(is_a($res, 'PEAR_Error')) {
                         wha_dialog_msgbox($err, $res->getMessage(), 6, 60, $dlg_opts2);
@@ -230,7 +230,7 @@ function wha_command_setup_dialog($script,$command,$common_opts,$opts,$args)
             trigger_error("can't determine configuration directory", E_USER_ERROR);
         }
         $file = implode(DIRECTORY_SEPARATOR, array($wha_confdir, 'WHA.ini'));
-    } 
+    }
 
     $root = null;
     $config = new Config();

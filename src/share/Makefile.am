@@ -4,7 +4,7 @@ include php-sources.mk
 nobase_dist_data_DATA = $(php_sources)
 nobase_nodist_data_DATA = $(php_generated)
 
-EXTRA_DIST = $(php_in_sources) 
+EXTRA_DIST = $(php_in_sources)
 
 php/WHA/version.php: php/WHA/version.php.in _sedvars.sed
 	( $(TEST) -e ./php/WHA || $(MKDIR) -p ./php/WHA ) && \
@@ -25,11 +25,11 @@ apigen_sources = $(php_sources)
 apigen-targets.mk: $(apigen_sources)
 	@echo "generating apigen-targets.mk" && \
 	(SFILES=`echo "$(apigen_sources)" | $(SED) -e 's/\([^ \t]\+\)/-s \1/g'` && \
-	$(APIGEN) -d ./api-doc $(APIGENFLAGS) $${SFILES})  && \
+	$(APIGEN) generate -d ./api-doc $(APIGENFLAGS) $${SFILES})  && \
 	  ( $(PRINTF) 'apigen_targets = ' && \
 	    ( $(FIND) ./api-doc -type f | $(SORT) | $(TR) '\n' ':' | \
 	      $(SED) -e 's/:\+$$/\n/' -e 's/:\+/ \\\n                  /g' ) ) \
-	    > ./apigen-targets.mk 
+	    > ./apigen-targets.mk
 
 nobase_nodist_html_DATA = $(apigen_targets)
 
@@ -37,8 +37,8 @@ include apigen-targets.mk
 
 $(apigen_targets): $(apigen_sources)
 	(SFILES=`echo "$(apigen_sources)" | $(SED) -e 's/\([^ \t]\+\)/-s \1/g'` && \
-	$(APIGEN) -d ./api-doc $(APIGENFLAGS) $${SFILES})
+	$(APIGEN) generate -d ./api-doc $(APIGENFLAGS) $${SFILES})
 
-CLEANFILES += $(apigen_targets) 
+CLEANFILES += $(apigen_targets)
 
 endif

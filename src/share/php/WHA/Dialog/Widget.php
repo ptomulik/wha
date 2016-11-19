@@ -1,22 +1,22 @@
 <?php
 // Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to 
-// deal in the Software without restriction, including without limitation the 
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE
 
 
@@ -100,14 +100,14 @@ abstract class WHA_DialogWidget
     // $_output {{{
     /**
      * Output from the most recent invocation of `dialog` program.
-     * @var string 
+     * @var string
      * @since 0.1
      */
     protected $_output;
     // }}}
     // $_errmsg {{{
     /**
-     * Error message received from most recent execution of `dialog` program. 
+     * Error message received from most recent execution of `dialog` program.
      * @since 0.1
      */
     protected $_errmsg;
@@ -116,8 +116,8 @@ abstract class WHA_DialogWidget
     /**
      * Callback for buttons.
      *
-     * It should be associative array, which maps `dialog`'s button return 
-     * codes onto callable objects. Each callable should accept single 
+     * It should be associative array, which maps `dialog`'s button return
+     * codes onto callable objects. Each callable should accept single
      * argument, which is an instance of calling widget (this object).
      *
      * @var array
@@ -135,7 +135,7 @@ abstract class WHA_DialogWidget
      * @param array common options to be passed to the `dialog` program
      * @since 0.1
      */
-    public function __construct($text=null, $height=null, $width=null, 
+    public function __construct($text=null, $height=null, $width=null,
                                 $opts=null) {
         if(isset($text)) $this->text = $text;
         else $this->text = self::$default_text;
@@ -153,7 +153,7 @@ abstract class WHA_DialogWidget
     // }}}
     // run() {{{
     /**
-     * Run the dialog. If error occurs, throw exception. 
+     * Run the dialog. If error occurs, throw exception.
      *
      * @throw WHA_DialogException
      * @since 0.1
@@ -206,8 +206,8 @@ abstract class WHA_DialogWidget
     // }}}
     // getErrorMessage() {{{
     /**
-     * If {@link hasError()} returned `true`, this function contains returns 
-     * error message. 
+     * If {@link hasError()} returned `true`, this function contains returns
+     * error message.
      *
      * @return string
      * @since 0.1
@@ -216,7 +216,7 @@ abstract class WHA_DialogWidget
     // }}}
     // hasError() {{{
     /**
-     * Return true, if the last interaction with `dialog` program ended with 
+     * Return true, if the last interaction with `dialog` program ended with
      * error.
      *
      * In that case {@link getErrorMessage()} contains the error message.
@@ -232,10 +232,10 @@ abstract class WHA_DialogWidget
     /**
      * Simulate ESC key.
      *
-     * This function is mainly for use from callbacks. Its effective only when 
-     * invoked from within {@link run()}. After this, the {@linkn run()} 
+     * This function is mainly for use from callbacks. Its effective only when
+     * invoked from within {@link run()}. After this, the {@linkn run()}
      * returns control to its caller.
-     * 
+     *
      * @since 0.1
      */
     public function pressEscape() {
@@ -247,10 +247,10 @@ abstract class WHA_DialogWidget
     /**
      * Simulate Cancel button.
      *
-     * This function is mainly for use from callbacks. Its effective only when 
-     * invoked from within {@link run()}. After this, the {@linkn run()} 
+     * This function is mainly for use from callbacks. Its effective only when
+     * invoked from within {@link run()}. After this, the {@linkn run()}
      * returns control to its caller.
-     * 
+     *
      * @since 0.1
      */
     public function pressCancel() {
@@ -262,10 +262,10 @@ abstract class WHA_DialogWidget
     /**
      * Simulate Ok button.
      *
-     * This function is mainly for use from callbacks. Its effective only when 
-     * invoked from within {@link run()}. After this, the {@linkn run()} 
+     * This function is mainly for use from callbacks. Its effective only when
+     * invoked from within {@link run()}. After this, the {@linkn run()}
      * returns control to its caller.
-     * 
+     *
      * @since 0.1
      */
     public function pressOk() {
@@ -277,10 +277,10 @@ abstract class WHA_DialogWidget
     /**
      * Continue displaying widget (e.g. after the button was pressed).
      *
-     * This function is mainly for use from callbacks. Its effective only when 
-     * invoked from within {@link run()}. After this, the {@linkn run()} 
+     * This function is mainly for use from callbacks. Its effective only when
+     * invoked from within {@link run()}. After this, the {@linkn run()}
      * returns control to its caller.
-     * 
+     *
      * @since 0.1
      */
     public function resume() {
@@ -291,18 +291,18 @@ abstract class WHA_DialogWidget
     /**
      * Associate buttons with callbacks.
      *
-     * The `$cbs` argument should be an associative array, with keys 
-     * corresponding to `dialog`'s button codes (OK=0, CANCEL=1, HELP=2, 
-     * EXTRA=3, ESC=255), and values being callable objects. A callback should 
-     * accept single argument. The widget object will be passed to callback as 
-     * an argument. The value returned by callback is ignored. 
+     * The `$cbs` argument should be an associative array, with keys
+     * corresponding to `dialog`'s button codes (OK=0, CANCEL=1, HELP=2,
+     * EXTRA=3, ESC=255), and values being callable objects. A callback should
+     * accept single argument. The widget object will be passed to callback as
+     * an argument. The value returned by callback is ignored.
      *
      * @param array array of callable objects
      * @throw {@link WHA_DialogException}
      * @since 0.1
      */
     public function setBtnCallbacks($cbs) {
-        if(isset($cbs) && !is_array($cbs)) 
+        if(isset($cbs) && !is_array($cbs))
             throw new WHA_DialogException('expected array but got '.gettype($cbs));
         if(is_array($cbs)) {
             foreach($cbs as $tag => $cb) {

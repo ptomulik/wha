@@ -1,22 +1,22 @@
 <?php
 // Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to 
-// deal in the Software without restriction, including without limitation the 
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE
 
 
@@ -107,18 +107,18 @@ abstract class WHA_CliCmd implements WHA_ICmd
     }
     // }}}
     // getCliScriptName() {{{
-    /** 
+    /**
      * Return script name that was provided from CLI (`$argv[0]`).
-     * @return string 
+     * @return string
      * @since 0.1
      */
     public function getCliScriptName() { return $this->_cli_script; }
     // }}}
     // getCliCommonOptions() {{{
-    /** 
+    /**
      * Return common options (typed before command) that were found in CLI.
      *
-     * @return array 
+     * @return array
      * @since 0.1
      */
     public function getCliCommonOptions() { return $this->_cli_cops; }
@@ -134,7 +134,7 @@ abstract class WHA_CliCmd implements WHA_ICmd
     // getCliOptions() {{{
     /**
      * Return options received form CLI.
-     * @return array 
+     * @return array
      * @since 0.1
      */
     public function getCliOptions() { return $this->_cli_opts; }
@@ -153,7 +153,7 @@ abstract class WHA_CliCmd implements WHA_ICmd
      * @since 0.1
      */
     protected function setCliScriptName($script) {
-        $this->_cli_script = $script; 
+        $this->_cli_script = $script;
     }
     // }}}
     // setCliCommonOptions($cops) {{{
@@ -170,8 +170,8 @@ abstract class WHA_CliCmd implements WHA_ICmd
      * @param string
      * @since 0.1
      */
-    protected function setCliCommandName($cmd) { 
-        $this->_cli_cmd = $cmd; 
+    protected function setCliCommandName($cmd) {
+        $this->_cli_cmd = $cmd;
     }
     // }}}
     // setCliOptions($opts) {{{
@@ -179,8 +179,8 @@ abstract class WHA_CliCmd implements WHA_ICmd
      * @param array
      * @since 0.1
      */
-    protected function setCliOptions($opts) { 
-        $this->_cli_opts = $opts; 
+    protected function setCliOptions($opts) {
+        $this->_cli_opts = $opts;
     }
     // }}}
     // setCliArguments($args) {{{
@@ -189,17 +189,17 @@ abstract class WHA_CliCmd implements WHA_ICmd
      * @since 0.1
      */
     protected function setCliArguments($args) {
-        $this->_cli_args = $args; 
+        $this->_cli_args = $args;
     }
     // }}}
     // getCliCommonOption($name) {{{
     /**
      * Returns value of a common option or null.
      *
-     * Returns value of a requeset common option `$name` or null, if the option 
-     * doesn't exist (was not set on CLI e.g.). 
+     * Returns value of a requeset common option `$name` or null, if the option
+     * doesn't exist (was not set on CLI e.g.).
      *
-     * If the requested option is a boolean flag, the function returns `true` 
+     * If the requested option is a boolean flag, the function returns `true`
      * (option was present on CLI) or `null` (option was absent on CLI).
      *
      * @param string option name, e.g. `'-q'`
@@ -216,10 +216,10 @@ abstract class WHA_CliCmd implements WHA_ICmd
     /**
      * Returns value of an option or null.
      *
-     * Returns value of a requeset option `$name` or null, if the option 
+     * Returns value of a requeset option `$name` or null, if the option
      * doesn't exists (was not provided on CLI e.g.).
      *
-     * If the requested option is a boolean flag, the function returns `true` 
+     * If the requested option is a boolean flag, the function returns `true`
      * (option was present on CLI) or `null` (option was absent on CLI).
      *
      * @param string option name, e.g. `'-q'`
@@ -234,7 +234,7 @@ abstract class WHA_CliCmd implements WHA_ICmd
     // }}}
     // getCliArgument($n) {{{
     /**
-     * Return `$n`'th positional argument obtained from CLI. If such argument 
+     * Return `$n`'th positional argument obtained from CLI. If such argument
      * doesn't exist, null is returned.
      *
      * @param int index of the requested argument
@@ -275,7 +275,7 @@ abstract class WHA_CliCmd implements WHA_ICmd
      *
      * This is the code that should be returned to parent process (shell).
      *
-     * @return int 
+     * @return int
      * @since 0.1
      */
     public function getCliExitCode() { return $this->_cli_exit_code; }
@@ -302,7 +302,7 @@ abstract class WHA_CliCmd implements WHA_ICmd
     // setCliErrorMessage() {{{
     /**
      * @param int
-     * @return string   Error message 
+     * @return string   Error message
      * @since 0.1
      */
     protected function setCliErrorMessage($msg) { $this->_cli_errmsg = $msg; }

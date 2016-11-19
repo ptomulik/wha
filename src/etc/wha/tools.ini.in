@@ -34,30 +34,30 @@ dpkg-query="@DPKG_QUERY@";
 ;   Default value: @CUT@
 cut="@CUT@";
 
-; tr 
+; tr
 ;   Default value: @TR@
 tr="@TR@";
 
 ; wc
-;   Default value: @WC@ 
+;   Default value: @WC@
 wc="@WC@";
 
 ; sed
-;   Default value: @SED@ 
+;   Default value: @SED@
 sed="@SED@";
 
 ; grep
-;   Default value: @GREP@ 
+;   Default value: @GREP@
 grep="@GREP@";
 
 ; uniq:
-;   Default value: @UNIQ@ 
+;   Default value: @UNIQ@
 uniq="@UNIQ@";
 
 ; php
-;   Default value: @PHP@ 
+;   Default value: @PHP@
 php="@PHP@";
 
 ; which
-;   Default value: 'which' 
+;   Default value: 'which'
 which="which";

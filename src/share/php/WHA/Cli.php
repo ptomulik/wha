@@ -1,22 +1,22 @@
 <?php
 // Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to 
-// deal in the Software without restriction, including without limitation the 
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE
 
 
@@ -24,15 +24,15 @@
  * Encapsulates definition of CLI commands, options, and positional arguments
  * for the script.
  *
- * This object maintains information about command-line commands, options and 
- * positional arguments supported by **wha**. It also acts as command-line 
- * parser and may be used to generate help message. 
- * 
+ * This object maintains information about command-line commands, options and
+ * positional arguments supported by **wha**. It also acts as command-line
+ * parser and may be used to generate help message.
+ *
  * Example:
  * <code>
  * require_once('WHA/Cli.php');
  * $cli = new WHA_Cli();
- * $cli->cmds['moo'] = array( 'purp' => 'say moo', 
+ * $cli->cmds['moo'] = array( 'purp' => 'say moo',
  *                            'help' => "
  *   much longer, perhaps multiline description of
  *   say moo command
@@ -46,22 +46,22 @@
  *      wha [common options] <command> [options] [args]
  * </code>
  *
- * The WHA_Cli object encapsulates an associative array {@link $cops} to 
- * describe supported `common options` and three associative arrays: {@link 
- * $cmds}, {@link $opts}, and {@link $args} to describe supported commands, 
+ * The WHA_Cli object encapsulates an associative array {@link $cops} to
+ * describe supported `common options` and three associative arrays: {@link
+ * $cmds}, {@link $opts}, and {@link $args} to describe supported commands,
  * their `options`, and positional arguments `args`.
  *
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @since 0.1
  */
-class WHA_Cli 
+class WHA_Cli
 {
     // $cops {{{
-    /** 
+    /**
      *  Definition of common command-line options.
      *
-     *  This is an associative array, whose keys correspond to common options 
+     *  This is an associative array, whose keys correspond to common options
      *  supported by **wha**. For example, an array
      *  <code>
      *      array(
@@ -70,26 +70,26 @@ class WHA_Cli
      *          '-v' => array( 'help' => 'verbose mode' )
      *      )
      *  </code>
-     *  with keys `'-d'`, `'-q'`, `'-v'` corresponds to the following 
+     *  with keys `'-d'`, `'-q'`, `'-v'` corresponds to the following
      *  command-line syntax
      *  <code>
      *  wha [-d] [-q] [-v] foo [options] ...
      *  </code>
      *
-     *  The format of each item is same as for commands' options. See 
+     *  The format of each item is same as for commands' options. See
      *  documentation of {@link $opts} member variable.
      *
      *  @var array
      *  @since 0.1
-     */ 
+     */
     public $cops;
     // }}}
     // $cmds {{{
-    /** 
+    /**
      *  Definition of command-line commands.
      *
-     *  This is an associative array, whose keys correspond to commands 
-     *  supported by the *wha* script. For example, `$cmds['foo']` corresponds 
+     *  This is an associative array, whose keys correspond to commands
+     *  supported by the *wha* script. For example, `$cmds['foo']` corresponds
      *  to the command
      *  <code>
      *       wha foo
@@ -108,18 +108,18 @@ class WHA_Cli
     public $cmds;
     //}}}
     // $opts {{{
-    /** 
+    /**
      *  Definition of command-line options.
      *
-     *  This is an associative array whose keys correspond to the keys of 
-     *  {@link $cmds}, that is to the commands supported by the script. For 
+     *  This is an associative array whose keys correspond to the keys of
+     *  {@link $cmds}, that is to the commands supported by the script. For
      *  example `$opts['foo']` corresponds to the command
      *  <code>
      *  wha [common options] foo [options] ...
      *  </code>
-     *  and describes the `options`. 
+     *  and describes the `options`.
      *
-     *  The format of each item is the following (items in `[]` are 
+     *  The format of each item is the following (items in `[]` are
      *  optional)
      *  <code>
      *  $cli->opts['foo'] = array(
@@ -132,42 +132,42 @@ class WHA_Cli
      *  )
      *  </code>
      *
-     *  The item with key `'--xxx'` describes option `--xxx` for 
-     *  command `foo`. 
+     *  The item with key `'--xxx'` describes option `--xxx` for
+     *  command `foo`.
      *
-     *  The option is described by an associative array with the following keys 
+     *  The option is described by an associative array with the following keys
      *  <ul>
      *      <li>`type`       - if the option accepts a value
      *                                (i.e `--xxx val`),</li>
-     *      <li>`required`   - to tell whether the value is required 
+     *      <li>`required`   - to tell whether the value is required
      *                                or not (by default it is required),</li>
      *      <li>`help`       - one line help message,</li>
      *  </ul>
      *
-     *  If the key `'type'` is present, the option parser expects value 
-     *  for the option `--xxx`. By default the value is required - this 
+     *  If the key `'type'` is present, the option parser expects value
+     *  for the option `--xxx`. By default the value is required - this
      *  can be changed by setting `'required'` to `false`.
      *
      *  @var array
      *  @since 0.1
-     */ 
+     */
     public $opts;
     // }}}
     // $args {{{
     /**
      * Definition of command-line positional arguments.
      *
-     * This is an associative array, whose keys correspond to keys from 
-     * {@link $cmds}, that is to the commands supported by the script. For 
+     * This is an associative array, whose keys correspond to keys from
+     * {@link $cmds}, that is to the commands supported by the script. For
      * example, `$args['foo']` corresponds to the command
      * <code>
-     *      wha foo [xxx [yyy ... ] ] 
+     *      wha foo [xxx [yyy ... ] ]
      * </code>
      *
      * The item `$args['foo']` describes positional arguments supported
-     * by command 'foo'. To describe positional arguments we need to provide 
-     * the number of arguments accepted by command and eventually its name with 
-     * help messages. An example definition of `$args['foo']` for command 'foo' 
+     * by command 'foo'. To describe positional arguments we need to provide
+     * the number of arguments accepted by command and eventually its name with
+     * help messages. An example definition of `$args['foo']` for command 'foo'
      * (above) is the following
      * <code>
      *  $cli->args['foo'] = array(
@@ -183,48 +183,48 @@ class WHA_Cli
      *  )
      * </code>
      *
-     * In this case `$args['foo']` says that command `foo` takes zero or more 
-     * positional arguments (the `'range'` item), the first argument is 
+     * In this case `$args['foo']` says that command `foo` takes zero or more
+     * positional arguments (the `'range'` item), the first argument is
      * named `xxx`, the second and remaining arguments are reffered as `yyy`'s.
      *
-     * For parser to recognize that command may accept arguments, it is enough 
-     * to provide just the `'range'` item. 
+     * For parser to recognize that command may accept arguments, it is enough
+     * to provide just the `'range'` item.
      *
-     * To generate meaningful help messages, however, it is necessary to 
+     * To generate meaningful help messages, however, it is necessary to
      * provide also `'name'`s with `'help'` strings for first `n` arguments.
      *
      * The possible items in `$args['foo']` are:
      * <ul>
-     *  <li>`range` - range of arguments supported by command. It may 
-     *  be: 
+     *  <li>`range` - range of arguments supported by command. It may
+     *  be:
      *  <ul>
-     *      <li>`array($min,$max)` - minimum and maximum number of arguments to 
+     *      <li>`array($min,$max)` - minimum and maximum number of arguments to
      *      command `'foo'`,</li>
-     *      <li>`array($min)` or `array($min,null)` - command accepts `$min` or 
+     *      <li>`array($min)` or `array($min,null)` - command accepts `$min` or
      *      more arguments,</li>
-     *      <li>`array(null, $max)` or `array(1 => $max)` - command accepts 
+     *      <li>`array(null, $max)` or `array(1 => $max)` - command accepts
      *      zero to `$max` arguments,</li>
-     *      <li>`array(0)`, `array(0,null)` or `true` - command accepts zero or 
+     *      <li>`array(0)`, `array(0,null)` or `true` - command accepts zero or
      *      more arguments (max unbounded).</li>
      *  </ul>
-     *  By default (`$args['foo']['range']` not defined or isn't any of the 
-     *  above) it is assumed that command supports no arguments ($min=0, 
-     *  $max=0). 
+     *  By default (`$args['foo']['range']` not defined or isn't any of the
+     *  above) it is assumed that command supports no arguments ($min=0,
+     *  $max=0).
      *
-     *  Use {@link argsRangeFor()} to query the concrete range of supported 
-     *  arguments for a command. 
+     *  Use {@link argsRangeFor()} to query the concrete range of supported
+     *  arguments for a command.
      *  </li>
-     *  <li>`0, .., n` - additional information about first `n` 
+     *  <li>`0, .., n` - additional information about first `n`
      *  positional arguments.</li>
      * </ul>
      *
-     * The possible items in  `$args['foo'][$i]` (`$i = 0, .., n` - integer) 
+     * The possible items in  `$args['foo'][$i]` (`$i = 0, .., n` - integer)
      * are <ul>
      *  <li>`name` name of the argument (required)</li>
      *  <li>`help` help string for the argument (required)</li>
      * </ul>
      *
-     * If you don't mean do describe all the arguments, you may define only 
+     * If you don't mean do describe all the arguments, you may define only
      * first n items in `$args['foo']`.
      *
      * @var array
@@ -254,7 +254,7 @@ class WHA_Cli
      *  @param array Used to initialize `$this->opts['common']`
      *  @since 0.1
      */
-    public function __construct($cmds = null, $opts = null, $args = null, 
+    public function __construct($cmds = null, $opts = null, $args = null,
                                 $cops = null)
     {
         if($cmds === null) {
@@ -281,7 +281,7 @@ class WHA_Cli
     // }}}
     // parseArgv($argv,&$err) {{{
     /**
-     * Parse command line arguments. 
+     * Parse command line arguments.
      *
      * Example usage:
      * <code>
@@ -299,18 +299,18 @@ class WHA_Cli
      *  // $args - (array) positional arguments
      * </code>
      *
-     * After successful parsing, `$script` is always set to `$argv[0]`, 
-     * `$cops` and `$opts` are associative arrays and have only items 
-     * for options found in `$argv` (so you may use `array_keys($opts)` 
+     * After successful parsing, `$script` is always set to `$argv[0]`,
+     * `$cops` and `$opts` are associative arrays and have only items
+     * for options found in `$argv` (so you may use `array_keys($opts)`
      * to list names of all the options extracted from `$argv`), `$cmd` is
-     * a string with command name found in `$argv`, and `$args` is a plain 
+     * a string with command name found in `$argv`, and `$args` is a plain
      * array of values for positional arguments found in `$argv`.
      *
      * @param array Array of command line arguments passed to script (namely,
      *              its the PHP's <a href="http://php.net/manual/en/reserved.variables.argv.php">$argv</a>).
      * @param string Error message
      *
-     * @return array|false  On success returns 5-element array, on error 
+     * @return array|false  On success returns 5-element array, on error
      *                      returns false
      */
     public function parseArgv($argv, &$err = null)
@@ -339,7 +339,7 @@ class WHA_Cli
                     continue;
                 }
                 if(!isset($err)) {
-                    $oc = (strlen($arg)>0 && $arg{0} == '-') 
+                    $oc = (strlen($arg)>0 && $arg{0} == '-')
                         ?  'option' : 'command';
                     $err = 'unsupported ' . $oc .  " '". $arg . "'";
                 }
@@ -478,8 +478,8 @@ class WHA_Cli
                         break;
                     }
             }
-            if(isset($this->cmds[$cmd]['help']) && 
-                is_string($this->cmds[$cmd]['help']) && 
+            if(isset($this->cmds[$cmd]['help']) &&
+                is_string($this->cmds[$cmd]['help']) &&
                 strlen($this->cmds[$cmd]['help']) > 0) {
                     $help .= "\n\nDESCRIPTION:";
                     $help .= "\n".$this->cmds[$cmd]['help'];
@@ -490,7 +490,7 @@ class WHA_Cli
     // }}}
     // helpScriptName() {{{
     /**
-     * Convert `$argv[0]` to user-friendly script name, strippig the leading 
+     * Convert `$argv[0]` to user-friendly script name, strippig the leading
      * path from `$argv[0]` if it is in system's `$PATH`.
      *
      * @param string script name as obtained from `$argv[0]`
@@ -520,10 +520,10 @@ class WHA_Cli
     /**
      *  Tell how many arguments are required/supported by command $cmd
      *
-     *  This method returns array($min,$max) with $min being minimum number of 
-     *  required positional arguments and $max being the maximum number of 
-     *  arguments supported by command $cmd. If maximum is not defined, `$max` 
-     *  equals to <a 
+     *  This method returns array($min,$max) with $min being minimum number of
+     *  required positional arguments and $max being the maximum number of
+     *  arguments supported by command $cmd. If maximum is not defined, `$max`
+     *  equals to <a
      *  href="http://php.net/manual/en/reserved.constants.php">`PHP_INT_MAX`</a>.
      *
      *  @param string Command name
@@ -546,7 +546,7 @@ class WHA_Cli
                     $max = isset($rng[1]) ?  $rng[1] : PHP_INT_MAX;
                     if($min === null) $min = 0;
                     if($max === null) $max = PHP_INT_MAX;
-                } 
+                }
             } elseif(is_int($args)) {
                 $min = $args;
                 $max = $args;
@@ -590,14 +590,14 @@ class WHA_Cli
      * Try to interpret current argument from `$argv` list as an option.
      *
      * Returns `true` if option found, or `false` otherwise. In case of error,
-     * `false` is returned and `$err` constains error message. If option 
+     * `false` is returned and `$err` constains error message. If option
      * is not found but no error was detected `$err` remains unchanged.
      *
      * On exit sets:
      * <ul>
-     *  <li>`$s['cops']['--foo'] = true` - if common option `--foo` was 
+     *  <li>`$s['cops']['--foo'] = true` - if common option `--foo` was
      *  found</li>
-     *  <li>`$s['opts']['--foo'] = true` - if command's option `--foo` was 
+     *  <li>`$s['opts']['--foo'] = true` - if command's option `--foo` was
      *  found</li>
      *  <li>`$s['optv'] = array(...)` - if an option was found and it accepts
      *  a value</li>
@@ -663,7 +663,7 @@ class WHA_Cli
                     $optv['req'] = true;
                 }
                 $s['optv'] = $optv;
-            } 
+            }
         }
         $s[$okey][$arg] = true;
 
@@ -676,9 +676,9 @@ class WHA_Cli
      *
      * On exit sets:
      * <ul>
-     *  <li>`$s['cops']['--foo'] = $arg` - if value for common option `--foo` 
+     *  <li>`$s['cops']['--foo'] = $arg` - if value for common option `--foo`
      *  was processed</li>
-     *  <li>`$s['opts']['--foo'] = $arg` - if value for command option `--foo` 
+     *  <li>`$s['opts']['--foo'] = $arg` - if value for command option `--foo`
      *  was processed</li>
      *  <li>`$s['optv'] = null` - if option value was processed</li>
      *  <li>`$err` - if error occurred</li>
@@ -713,14 +713,14 @@ class WHA_Cli
      * <ul>
      * <li>`string` - actually no checking</li>
      * <li>`file` - check if the string contains well-formed file name</li>
-     * <li>`path` - check if the string contains well-formed path (file or 
+     * <li>`path` - check if the string contains well-formed path (file or
      *              directory)</li>
      * </ul>
      *
      * @param string a value to be validated
      * @param string type of the `$value`
-     * @param string to return error message 
-     * @return bool `true` on success, `false` if `$value` is not valid, 
+     * @param string to return error message
+     * @return bool `true` on success, `false` if `$value` is not valid,
      *              or if `$type` is not supported.
      * @since 0.1
      */
@@ -736,7 +736,7 @@ class WHA_Cli
                     return false;
                 }
                 if(!preg_match('#[[:alnum:]]#', basename($value))) {
-                    // we wish at least one alphanumeric in basename 
+                    // we wish at least one alphanumeric in basename
                     $err = "malformed file name '$value'";
                     return false;
                 }

@@ -1,22 +1,22 @@
 <?php
 // Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to 
-// deal in the Software without restriction, including without limitation the 
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE
 
 
@@ -33,13 +33,13 @@ require_once('WHA/ConfEdit.php');
 require_once('WHA/Misc.php');
 
 /**
- * Provides the 'setup' command. 
+ * Provides the 'setup' command.
  *
- * This object implements 'wha setup' CLI command. It drives a series of menus 
- * and other dialogs to lead user through configuration steps. 
+ * This object implements 'wha setup' CLI command. It drives a series of menus
+ * and other dialogs to lead user through configuration steps.
  *
- * Most of the stuff is based on callbacks. All the methods named `onXxx()` are 
- * callbacks which are called in response to certain menus or buttons. 
+ * Most of the stuff is based on callbacks. All the methods named `onXxx()` are
+ * callbacks which are called in response to certain menus or buttons.
  *
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -50,14 +50,14 @@ class WHA_CliCmdSetup extends WHA_CliCmd
     // $_cmd_info {{{
     private static $_cmd_info = array(
         'purp' => 'edit main wha configuration',
-        'help' => 
+        'help' =>
         "
-    This is an interactive command which helps you configure your WHA 
+    This is an interactive command which helps you configure your WHA
     installation. The command reads initial configuration from config file
-    (usually `/etc/wha/wha.ini'), guides you through several steps to alter 
-    current settings and finally allows to save new version of the 
-    configuration file. You may provide --file option to operate on custom 
-    configuration file instead of the default one. 
+    (usually `/etc/wha/wha.ini'), guides you through several steps to alter
+    current settings and finally allows to save new version of the
+    configuration file. You may provide --file option to operate on custom
+    configuration file instead of the default one.
     ");
     // }}}
     // $_cmd_opts {{{
@@ -83,7 +83,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
     // }}}
     // $_default_btitle {{{
     /**
-     * Default string for {@link _btitle}. 
+     * Default string for {@link _btitle}.
      * @var string
      * @since 0.1
      */
@@ -152,7 +152,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         }
 
         if($ok !== true) { // $ok can be PEAR_Error!
-            $opts = array('--backtitle', self::$default_btitle, 
+            $opts = array('--backtitle', self::$default_btitle,
                           '--title', 'Error');
             $this->setCliExitCode(1);
             $msg = $this->getCliErrorMessage();
@@ -160,7 +160,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             return;
         }
 
-        $this->_btitle = self::$default_btitle ; 
+        $this->_btitle = self::$default_btitle ;
         $curfile = $this->_conf->getCurrentFile();
         if(isset($curfile)) $this->_btitle .= ( " (" . $curfile . ")" );
 
@@ -178,7 +178,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             '--title', "Main menu"
         );
         $text = "Select configuration step";
-        $items = array( 
+        $items = array(
             'APACHE' => 'Settings related to apache server',
             'LOGROT' => 'Settings related to log rotation',
             'ACCEPT' => 'Accept and save changes'
@@ -206,7 +206,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             '--title', "Apache configuration menu"
         );
         $text = "Select configuration step";
-        $items = array( 
+        $items = array(
             'PACKAGE' => 'Apache package name',
             'CONFDIR' => 'Apache configuration directory',
             'RETURN'  => 'Return to main menu'
@@ -231,7 +231,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             '--title', "Log rotation configuration menu"
         );
         $text = "Select configuration step";
-        $items = array( 
+        $items = array(
             'FACILITY' => 'Choose facility used for log rotation',
             'RETURN'  => 'Return to main menu'
         );
@@ -264,7 +264,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
                 if($ok !== true) {
                     $opts2 = $opts;
                     $opts2[4] = "Error";
-                    $msgbox = new WHA_DialogMsgbox($ok->getMessage(), 7, 60, 
+                    $msgbox = new WHA_DialogMsgbox($ok->getMessage(), 7, 60,
                                                    $opts2);
                     // Go back to main menu
                     $caller->resume();
@@ -289,7 +289,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         }
         $value = $item->getContent();
 
-        $opts = array(  '--backtitle', $this->_btitle, 
+        $opts = array(  '--backtitle', $this->_btitle,
                         '--title', "Apache package name",
                         '--extra-button', '--extra-label', "Guess");
         $text = "Enter the name of your installed apache package";
@@ -314,7 +314,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         }
         $fpath = $item->getContent();
 
-        $opts = array(  '--backtitle', $this->_btitle, 
+        $opts = array(  '--backtitle', $this->_btitle,
                         '--title', "Apache config directory",
                         '--extra-button', '--extra-label', "Guess");
         $inputbox = new WHA_DialogDselect($fpath, 10, 50, $opts);
@@ -342,8 +342,8 @@ class WHA_CliCmdSetup extends WHA_CliCmd
                 $msgbox = new WHA_DialogMsgbox("an error occurred",7,60,$opts);
             }
             $msgbox->run();
-        } 
-        $this->confirmGuessResult($caller, $apaches, "Apache package name"); 
+        }
+        $this->confirmGuessResult($caller, $apaches, "Apache package name");
         $caller->resume();
     }
     // }}}
@@ -392,7 +392,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             foreach ($subdirs as $subdir) {
                 $ds = DIRECTORY_SEPARATOR;
                 $glob = glob(implode($ds,array($sdir,$subdir)), GLOB_ONLYDIR);
-                // ignore errors and go ahead, its not mission critical 
+                // ignore errors and go ahead, its not mission critical
                 if(is_array($glob) && count($glob) > 0) {
                     $dirs = array_merge($dirs, $glob);
                 }
@@ -404,12 +404,12 @@ class WHA_CliCmdSetup extends WHA_CliCmd
     // }}}
     // onLogrotFacility($caller) {{{
     /**
-     * Confirm result of some guesses. 
+     * Confirm result of some guesses.
      *
-     * If `$array` has only one element, display `yesno` dialog to accept or 
-     * decline the value in `$array`. If `$array` has more elements, display 
-     * `radiolist` dialog to let user chose one of the items found in array. In 
-     * any case, if a value is finally accepted, it is being assigned to 
+     * If `$array` has only one element, display `yesno` dialog to accept or
+     * decline the value in `$array`. If `$array` has more elements, display
+     * `radiolist` dialog to let user chose one of the items found in array. In
+     * any case, if a value is finally accepted, it is being assigned to
      * `$receiver` by calling `$receiver->setValue()`.
      *
      * @param WHA_Inputbox object which is receiving th evalue
@@ -425,12 +425,12 @@ class WHA_CliCmdSetup extends WHA_CliCmd
         }
         $sel = $item->getContent();
 
-        $opts = array(  '--backtitle', $this->_btitle, 
+        $opts = array(  '--backtitle', $this->_btitle,
                         '--title', "Apache package name");
         $text = "What facility your system uses to rotate logs?";
 
         $items = array(
-            'logrotate' => array('(Linux)','off'), 
+            'logrotate' => array('(Linux)','off'),
             'newsyslog' => array('(FreeBSD)','off')
         );
 
@@ -449,12 +449,12 @@ class WHA_CliCmdSetup extends WHA_CliCmd
     // }}}
     // confirmGuessResult($caller) {{{
     /**
-     * Confirm result of some guesses. 
+     * Confirm result of some guesses.
      *
-     * If `$array` has only one element, display `yesno` dialog to accept or 
-     * decline the value in `$array`. If `$array` has more elements, display 
-     * `radiolist` dialog to let user chose one of the items found in array. In 
-     * any case, if a value is finally accepted, it is being assigned to 
+     * If `$array` has only one element, display `yesno` dialog to accept or
+     * decline the value in `$array`. If `$array` has more elements, display
+     * `radiolist` dialog to let user chose one of the items found in array. In
+     * any case, if a value is finally accepted, it is being assigned to
      * `$receiver` by calling `$receiver->setValue()`.
      *
      * @param WHA_Inputbox object which is receiving th evalue
@@ -470,7 +470,7 @@ class WHA_CliCmdSetup extends WHA_CliCmd
             if (count($array) > 1) {
                 $items = array_fill_keys($array, array("",'off'));
                 $text = "I guess, one of these is your $what. Chose one.";
-                $radiolist = new WHA_DialogRadiolist($text, 12, 50, 10, $items, 
+                $radiolist = new WHA_DialogRadiolist($text, 12, 50, 10, $items,
                                                      $opts);
                 $radiolist->run();
                 if($radiolist->getExitCode() == DIALOG_OK) {

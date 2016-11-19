@@ -1,7 +1,7 @@
 include $(top_srcdir)/src/sedvars.mk
 
 
-# nobase_dist_sysconf_DATA = 
+# nobase_dist_sysconf_DATA =
 nobase_nodist_sysconf_DATA = wha/tools.ini wha/wha.ini
 
 EXTRA_DIST = $(srcdir)/wha/tools.ini.in \

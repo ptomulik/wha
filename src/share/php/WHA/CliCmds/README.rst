@@ -33,4 +33,4 @@ Comment out the line which registers the command. For example::
 should become::
 
     // WHA_CliCmdXxx::registerThisCmd();
- 
+

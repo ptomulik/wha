@@ -1,22 +1,22 @@
 <?php
 // Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to 
-// deal in the Software without restriction, including without limitation the 
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE
 
 
@@ -33,18 +33,18 @@ class WHA_ToolsException extends Exception { }
 
 /**
  * Registry of available tools (external programs) that may be executed by WHA.
- * It maps tool names (independent on actual program name or  its location in 
+ * It maps tool names (independent on actual program name or  its location in
  * filesystem) onto absolute paths to executables.
  *
- * By default, initial configuration is loaded from tools.ini ([tools] 
+ * By default, initial configuration is loaded from tools.ini ([tools]
  * section).
- * 
+ *
  *
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @since 0.1
  */
-class WHA_Tools 
+class WHA_Tools
 {
     // instance() {{{
     /**
@@ -73,7 +73,7 @@ class WHA_Tools
     // }}}
     // __construct ($file = 'tools.ini') {{{
     /**
-     * @param string|null   name of the configuration file to initially read 
+     * @param string|null   name of the configuration file to initially read
      *                      the list of tools from (default: 'tools.ini')
      * @throw WHA_ToolsException (if there is problem with tools.ini file)
      * @since 0.1
@@ -95,7 +95,7 @@ class WHA_Tools
             return false;
         }
         if (WHA_TOOLS_WIN32) {
-            return (($path{0} == '/') ||  
+            return (($path{0} == '/') ||
                      preg_match('/^[a-zA-Z]:(\\\|\/)/', $path));
         }
         return ($path{0} == '/') || ($path{0} == '~');
@@ -187,7 +187,7 @@ class WHA_Tools
     // }}}
     // setTools($tools) {{{
     /**
-     * @param array associative array with tool names as keys and paths as 
+     * @param array associative array with tool names as keys and paths as
      *              values
      * @throw {@link WHA_ToolsException} (if some tool is not executable)
      * @since 0.1
@@ -225,7 +225,7 @@ function wha_tool($tool)
 
 /**
  * Start $tool program and return resource object representing the new process.
- * After this, you should be able to write to `$pipes[0]` (stdin) and read from 
+ * After this, you should be able to write to `$pipes[0]` (stdin) and read from
  * `$pipes[1]` (stdout) and `$pipes[2]` (stderr) to communicate with the new
  * running process.
  *
@@ -246,7 +246,7 @@ function wha_tool_open($tool, $args, &$pipes, $stdin = STDIN, $stdout = STDOUT,
                        $stderr = STDERR)
 {
     $descriptorspec = array(
-        0 => $stdin, 
+        0 => $stdin,
         1 => $stdout,
         2 => $stderr
     );
@@ -254,7 +254,7 @@ function wha_tool_open($tool, $args, &$pipes, $stdin = STDIN, $stdout = STDOUT,
     $prog = wha_tool($tool);
     // Escape arguments, when necessary
     $noescape = ':^[a-zA-Z0-9_=-]+$:';
-    $args = array_map(function($a) use ($noescape) { 
+    $args = array_map(function($a) use ($noescape) {
         return preg_match($noescape,$a) ? $a : escapeshellarg($a);
     }, $args);
     $toolcom = $prog . ' ' . implode(' ', $args);
@@ -264,21 +264,21 @@ function wha_tool_open($tool, $args, &$pipes, $stdin = STDIN, $stdout = STDOUT,
 /**
  * Wait for the program process to complete.
  *
- * Wait for program to complete and read its stdout and stderr. Return 
+ * Wait for program to complete and read its stdout and stderr. Return
  * programs' exit code (or -1 if there is an error on PHP side).
  *
  * @note Arguments from `$args` are escaped with `escapeshellarg()`.
  *
  * @param resource      resource representing program process,
  *                      as returned by `proc_open()`
- * @param array         pipes for communication with program, as returned by 
+ * @param array         pipes for communication with program, as returned by
  *                      wha_tool_open
- * @param string|false  content retrieved from program's stdout or `false` on 
+ * @param string|false  content retrieved from program's stdout or `false` on
  *                      failure
- * @param string|false  content retrieved from program's stderr or error 
- *                      message if there is an error on PHP side; `false` if 
+ * @param string|false  content retrieved from program's stderr or error
+ *                      message if there is an error on PHP side; `false` if
  *                      there was error related to reading from pipe
- * @return int          exit code from program (>=0) or -1 if proc_close() 
+ * @return int          exit code from program (>=0) or -1 if proc_close()
  *                      fails
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
@@ -318,7 +318,7 @@ function wha_tool_close($process, $pipes, &$out=null, &$err=null)
 /**
  * Run tool program.
  *
- * Execute program `$tool`, write `$in` to its STDIN, read program's 
+ * Execute program `$tool`, write `$in` to its STDIN, read program's
  * output (stdout) to `$out` and error output (stderr) to `$err`.
  *
  * @note Each argument in `$args` will be mapped through `escapeshellarg()`.
@@ -326,11 +326,11 @@ function wha_tool_close($process, $pipes, &$out=null, &$err=null)
  * @param string        tool name
  * @param array         command-line arguments to the program,
  * @param string        content to be pumped to program's stdin
- * @param string|false  content retrieved from program's stdout or `false` on 
+ * @param string|false  content retrieved from program's stdout or `false` on
  *                      failure
- * @param string|false  content retrieved from program's stderr or `false` on 
+ * @param string|false  content retrieved from program's stderr or `false` on
  *                      failure
- * @return int      status code from the program (>=0) or -1 in case of other 
+ * @return int      status code from the program (>=0) or -1 in case of other
  *                  failures (process initialization error, and so on.)
  * @package WHA
  * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
