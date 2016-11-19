@@ -36,7 +36,7 @@ require_once('WHA/Dialog/Functions.php');
  * and the exit code ({@link getExitCode()}) is set to zero (user pressed OK).
  * To define the return tag, use {@link setReturnTag()}.
  *
- * @author Pawel Tomulik <ptomuilik@meil.pw.edu.pl>
+ * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @package WHA
  * @since 0.1
  */

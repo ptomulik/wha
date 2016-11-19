@@ -28,7 +28,7 @@ require_once('WHA/Dialog/Functions.php');
  *
  * This class implements `msgbox` dialog.
  *
- * @author Pawel Tomulik <ptomuilik@meil.pw.edu.pl>
+ * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @package WHA
  * @since 0.1
  */

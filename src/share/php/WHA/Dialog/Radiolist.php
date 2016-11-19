@@ -33,7 +33,7 @@ require_once('WHA/Dialog/Functions.php');
  * associate callbacks with  tags, so that user functions may  be invoked when
  * radiolist entry is * selected.
  *
- * @author Pawel Tomulik <ptomuilik@meil.pw.edu.pl>
+ * @author Pawel Tomulik <ptomulik@meil.pw.edu.pl>
  * @package WHA
  * @since 0.1
  */
