@@ -34,6 +34,9 @@ Makefile.in
 _sedvars.sed
 _sedvars.tmp
 /wha-*.tar.gz
+src/sbin/wha
+src/share/php/WHA/version.php
+
 #############################################################################
 # Other crap
 /installdir/
